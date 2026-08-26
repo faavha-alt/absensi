@@ -9,7 +9,7 @@ use Illuminate\Support\Carbon;
 
 class TodayAttendance extends Widget
 {
-    protected static int|string $sort = 2;
+    protected static ?int $sort = 2;
 
     protected string $view = 'filament.widgets.today-attendance';
 
