@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\AttendanceRecaps\Tables;
 
+use App\Filament\Exports\AttendanceRecapExporter;
 use App\Models\Employee;
+use Filament\Actions\ExportAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Columns\TextColumn;
@@ -73,6 +75,11 @@ class AttendanceRecapsTable
                 Filter::make('telat_saja')
                     ->label('Hanya yang telat')
                     ->query(fn ($query) => $query->where('late_minutes', '>', 0)),
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(AttendanceRecapExporter::class)
+                    ->label('Export'),
             ])
             ->recordActions([
                 ViewAction::make(),

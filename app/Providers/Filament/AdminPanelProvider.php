@@ -42,7 +42,7 @@ class AdminPanelProvider extends PanelProvider
             ->maxContentWidth(Width::Full)
             ->renderHook(
                 PanelsRenderHook::HEAD_END,
-                fn () => new HtmlString('<link rel="stylesheet" href="/css/tailadmin-theme.css?v=5">')
+                fn () => new HtmlString('<link rel="stylesheet" href="/css/tailadmin-theme.css?v='.filemtime(public_path('css/tailadmin-theme.css')).'">')
             )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')

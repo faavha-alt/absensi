@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Middleware\LogAndFilterAdmsRequest;
+use Syofyanzuhad\FilamentZktecoAdms\Models\AttendanceLog;
+use Syofyanzuhad\FilamentZktecoAdms\Models\Device;
+use Syofyanzuhad\FilamentZktecoAdms\Models\DeviceCommand;
+use Syofyanzuhad\FilamentZktecoAdms\Models\ZktecoUser;
+
 // config for Syofyanzuhad/FilamentZktecoAdms
 
 return [
@@ -25,7 +31,7 @@ return [
     */
     'routes' => [
         'prefix' => env('ZKTECO_ROUTE_PREFIX', 'iclock'),
-        'middleware' => ['api'],
+        'middleware' => ['api', LogAndFilterAdmsRequest::class],
         'domain' => env('ZKTECO_ROUTE_DOMAIN', null),
     ],
 
@@ -39,7 +45,7 @@ return [
     */
     'device' => [
         // Automatically register new devices when they connect
-        'auto_register' => env('ZKTECO_AUTO_REGISTER_DEVICES', true),
+        'auto_register' => env('ZKTECO_AUTO_REGISTER_DEVICES', false),
 
         // Minutes after which a device is considered offline
         'offline_threshold_minutes' => env('ZKTECO_OFFLINE_THRESHOLD', 10),
@@ -85,10 +91,10 @@ return [
     |
     */
     'models' => [
-        'device' => \Syofyanzuhad\FilamentZktecoAdms\Models\Device::class,
-        'attendance_log' => \Syofyanzuhad\FilamentZktecoAdms\Models\AttendanceLog::class,
-        'user' => \Syofyanzuhad\FilamentZktecoAdms\Models\ZktecoUser::class,
-        'device_command' => \Syofyanzuhad\FilamentZktecoAdms\Models\DeviceCommand::class,
+        'device' => Device::class,
+        'attendance_log' => AttendanceLog::class,
+        'user' => ZktecoUser::class,
+        'device_command' => DeviceCommand::class,
     ],
 
     /*
@@ -113,6 +119,11 @@ return [
     | Configure the Filament admin panel integration.
     |
     */
+    'security' => [
+        // Daftar IP publik device yang boleh push ke /iclock/* (pisahkan koma). Kosong = tidak dibatasi IP.
+        'allowed_ips' => env('ZKTECO_ALLOWED_IPS', ''),
+    ],
+
     'filament' => [
         'navigation_group' => 'ZKTeco ADMS',
         'navigation_icon' => 'heroicon-o-finger-print',

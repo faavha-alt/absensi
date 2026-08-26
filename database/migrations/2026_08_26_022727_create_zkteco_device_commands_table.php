@@ -8,10 +8,10 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create(config('zkteco-adms.table_prefix', 'zkteco_') . 'device_commands', function (Blueprint $table) {
+        Schema::create(config('zkteco-adms.table_prefix', 'zkteco_').'device_commands', function (Blueprint $table) {
             $table->id();
             $table->foreignId('device_id')
-                ->constrained(config('zkteco-adms.table_prefix', 'zkteco_') . 'devices')
+                ->constrained(config('zkteco-adms.table_prefix', 'zkteco_').'devices')
                 ->cascadeOnDelete();
             $table->string('command_type');
             $table->text('command_content');
@@ -28,6 +28,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists(config('zkteco-adms.table_prefix', 'zkteco_') . 'device_commands');
+        Schema::dropIfExists(config('zkteco-adms.table_prefix', 'zkteco_').'device_commands');
     }
 };

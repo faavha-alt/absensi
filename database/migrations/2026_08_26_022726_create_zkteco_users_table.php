@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create(config('zkteco-adms.table_prefix', 'zkteco_') . 'users', function (Blueprint $table) {
+        Schema::create(config('zkteco-adms.table_prefix', 'zkteco_').'users', function (Blueprint $table) {
             $table->id();
             $table->string('pin')->unique();
             $table->string('name')->nullable();
@@ -25,6 +25,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists(config('zkteco-adms.table_prefix', 'zkteco_') . 'users');
+        Schema::dropIfExists(config('zkteco-adms.table_prefix', 'zkteco_').'users');
     }
 };

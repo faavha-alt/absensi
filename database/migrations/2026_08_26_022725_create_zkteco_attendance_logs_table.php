@@ -8,10 +8,10 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create(config('zkteco-adms.table_prefix', 'zkteco_') . 'attendance_logs', function (Blueprint $table) {
+        Schema::create(config('zkteco-adms.table_prefix', 'zkteco_').'attendance_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('device_id')
-                ->constrained(config('zkteco-adms.table_prefix', 'zkteco_') . 'devices')
+                ->constrained(config('zkteco-adms.table_prefix', 'zkteco_').'devices')
                 ->cascadeOnDelete();
             $table->string('pin');
             $table->timestamp('punched_at');
@@ -30,6 +30,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists(config('zkteco-adms.table_prefix', 'zkteco_') . 'attendance_logs');
+        Schema::dropIfExists(config('zkteco-adms.table_prefix', 'zkteco_').'attendance_logs');
     }
 };
