@@ -174,6 +174,50 @@ main.fi-main {
     color: var(--ak-text-muted);
 }
 
+/* --- Kalender detail pegawai --- */
+.cal-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    min-height: 2.9rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--ak-border);
+    background: var(--ak-surface);
+    cursor: default;
+}
+.cal-cell .cal-num {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--ak-text);
+}
+.cal-cell .cal-dot {
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 9999px;
+}
+.cal-cell.c-hadir   { border-color: rgba(47, 179, 128, 0.4);  background: rgba(47, 179, 128, 0.08); }
+.cal-cell.c-hadir .cal-dot   { background: var(--st-hadir); }
+.cal-cell.c-telat   { border-color: rgba(220, 53, 69, 0.4);   background: rgba(220, 53, 69, 0.08); }
+.cal-cell.c-telat .cal-dot   { background: var(--st-telat); }
+.cal-cell.c-pulang  { border-color: rgba(245, 158, 11, 0.45); background: rgba(245, 158, 11, 0.1); }
+.cal-cell.c-pulang .cal-dot  { background: var(--st-pulang-cepat); }
+.cal-cell.c-alpa    { border-color: rgba(156, 163, 175, 0.35); background: rgba(156, 163, 175, 0.08); }
+.cal-cell.c-alpa .cal-dot    { background: var(--st-alpa); }
+.cal-cell.c-libur   { border-color: rgba(124, 138, 165, 0.35); background: rgba(124, 138, 165, 0.1); }
+.cal-cell.c-libur .cal-dot   { background: var(--st-libur); }
+.cal-cell.c-weekend { border-color: transparent; background: transparent; }
+.cal-cell.c-weekend .cal-num { color: #d1d5db; }
+.cal-cell.c-weekend .cal-dot { background: transparent; }
+.cal-cell.c-null    { border-color: var(--ak-border); background: var(--ak-surface); }
+.cal-cell.c-null .cal-num    { color: #d1d5db; }
+.cal-cell.c-null .cal-dot    { background: transparent; }
+.cal-cell.cal-today {
+    outline: 2px solid var(--ak-primary);
+    outline-offset: 1px;
+}
+
 /* --- Sidebar: navy gelap, clean --- */
 .fi-sidebar {
     background-color: var(--ak-sidebar-bg) !important;

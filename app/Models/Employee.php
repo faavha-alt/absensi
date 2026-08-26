@@ -24,4 +24,9 @@ class Employee extends Model
     {
         return $this->hasMany(AttendanceLog::class, 'pin', 'zkteco_pin');
     }
+
+    public function attendanceRecaps()
+    {
+        return $this->hasMany(AttendanceRecap::class);
+    }
 }
