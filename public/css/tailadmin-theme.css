@@ -1,0 +1,86 @@
+/* Custom theme skin approximating TailAdmin's visual identity for the Filament panel */
+
+:root {
+    --tailadmin-page-bg: #f2f4f7;
+    --tailadmin-card-radius: 0.75rem;
+    --tailadmin-card-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.06), 0 1px 2px 0 rgba(16, 24, 40, 0.04);
+}
+
+.fi-body,
+.fi-main-ctn {
+    background-color: var(--tailadmin-page-bg);
+}
+
+.dark .fi-body,
+.dark .fi-main-ctn {
+    background-color: #101828;
+}
+
+.fi-section,
+.fi-ta-ctn,
+.fi-wi-stats-overview-stat,
+.fi-in-card,
+.fi-fo-component-ctn .fi-section,
+.fi-modal-window {
+    border-radius: var(--tailadmin-card-radius) !important;
+    box-shadow: var(--tailadmin-card-shadow) !important;
+    border-width: 0 !important;
+}
+
+.fi-sidebar {
+    box-shadow: 1px 0 2px 0 rgba(16, 24, 40, 0.04);
+}
+
+.fi-sidebar-nav-groups {
+    gap: 1.25rem;
+}
+
+.fi-sidebar-item-active .fi-sidebar-item-button {
+    border-radius: 0.5rem;
+}
+
+.fi-topbar nav {
+    box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
+}
+
+.fi-wi-stats-overview-stat {
+    padding: 1.25rem 1.5rem;
+}
+
+.fi-btn.fi-color-primary,
+.fi-ac-btn-action.fi-color-primary {
+    border-radius: 0.5rem;
+}
+
+.fi-badge {
+    border-radius: 9999px;
+}
+
+.tailadmin-stat-card {
+    background: #ffffff;
+    border-radius: var(--tailadmin-card-radius);
+    box-shadow: var(--tailadmin-card-shadow);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.dark .tailadmin-stat-card {
+    background: #1d2939;
+}
+
+.tailadmin-stat-icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.tailadmin-stat-icon svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}

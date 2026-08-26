@@ -4,7 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\AttendanceRecap;
 use BackedEnum;
-use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
@@ -29,7 +29,8 @@ class MonthlyAttendanceRecap extends Page implements HasForms
     public function mount(): void
     {
         $this->form->fill([
-            'month' => now()->startOfMonth()->toDateString(),
+            'bulan' => now()->month,
+            'tahun' => now()->year,
         ]);
     }
 
@@ -37,23 +38,44 @@ class MonthlyAttendanceRecap extends Page implements HasForms
     {
         return $schema
             ->components([
-                DatePicker::make('month')
+                Select::make('bulan')
                     ->label('Bulan')
-                    ->displayFormat('F Y')
+                    ->options([
+                        1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+                        5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+                        9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember',
+                    ])
                     ->native(false)
-                    ->live(),
+                    ->live()
+                    ->required(),
+                Select::make('tahun')
+                    ->label('Tahun')
+                    ->options(fn () => $this->availableYears())
+                    ->native(false)
+                    ->live()
+                    ->required(),
             ])
             ->statePath('data');
     }
 
+    protected function availableYears(): array
+    {
+        $min = AttendanceRecap::min('date');
+        $startYear = $min ? Carbon::parse($min)->year : now()->year;
+        $endYear = now()->year;
+
+        return collect(range($endYear, $startYear))->mapWithKeys(fn ($y) => [$y => $y])->all();
+    }
+
     public function getRows(): \Illuminate\Support\Collection
     {
-        $month = Carbon::parse($this->data['month'] ?? now())->startOfMonth();
+        $bulan = (int) ($this->data['bulan'] ?? now()->month);
+        $tahun = (int) ($this->data['tahun'] ?? now()->year);
 
         return AttendanceRecap::query()
             ->selectRaw('employee_id, COUNT(*) as total_hadir, SUM(late_minutes > 0) as jumlah_telat, SUM(late_minutes) as total_menit_telat, SUM(early_leave_minutes > 0) as jumlah_pulang_cepat')
-            ->whereYear('date', $month->year)
-            ->whereMonth('date', $month->month)
+            ->whereYear('date', $tahun)
+            ->whereMonth('date', $bulan)
             ->groupBy('employee_id')
             ->with('employee')
             ->get()
