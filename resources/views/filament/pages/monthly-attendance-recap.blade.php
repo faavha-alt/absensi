@@ -92,4 +92,49 @@
             </table>
         </div>
     </x-filament::section>
+
+    @php $matrix = $this->getMatrix(); @endphp
+
+    <x-filament::section>
+        <x-slot name="heading">
+            Matriks Harian
+        </x-slot>
+
+        <div class="mb-3 flex flex-wrap gap-x-4 gap-y-2 text-xs text-gray-600 dark:text-gray-300">
+            <span><span class="st-badge st-hadir">H</span> Hadir</span>
+            <span><span class="st-badge st-telat">T</span> Telat</span>
+            <span><span class="st-badge st-pulang">P</span> Pulang Cepat</span>
+            <span><span class="st-badge st-alpa">A</span> Alpa</span>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="st-matrix w-full text-sm">
+                <thead>
+                    <tr class="border-b border-gray-200 dark:border-white/10">
+                        <th class="px-2 py-2 text-left font-semibold text-gray-500 dark:text-gray-400">Pegawai</th>
+                        @foreach ($matrix['days'] as $date)
+                            <th class="px-1 py-2">
+                                <span class="st-date" title="{{ $date->format('d M Y') }}">{{ $date->format('d') }}</span>
+                            </th>
+                        @endforeach
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 dark:divide-white/5">
+                    @foreach ($matrix['employees'] as $emp)
+                        <tr>
+                            <td class="whitespace-nowrap px-2 py-2 text-left font-medium">{{ $emp->name }}</td>
+                            @foreach ($matrix['days'] as $date)
+                                @php
+                                    $cell = $matrix['cells'][$emp->id.'|'.$date->toDateString()] ?? ['c' => 'c-alpa', 'label' => 'A', 'title' => 'Alpa'];
+                                @endphp
+                                <td class="px-1 py-2">
+                                    <span class="st-cell {{ $cell['c'] }}" title="{{ $date->format('d M Y') }} · {{ $cell['title'] }}">{{ $cell['label'] }}</span>
+                                </td>
+                            @endforeach
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </x-filament::section>
 </x-filament-panels::page>

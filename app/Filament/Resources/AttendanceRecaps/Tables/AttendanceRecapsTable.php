@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\AttendanceRecaps\Tables;
 
 use App\Filament\Exports\AttendanceRecapExporter;
+use App\Models\AttendanceRecap;
 use App\Models\Employee;
 use Filament\Actions\ExportAction;
 use Filament\Actions\ViewAction;
@@ -36,6 +37,15 @@ class AttendanceRecapsTable
                     ->time('H:i')
                     ->placeholder('-')
                     ->sortable(),
+                TextColumn::make('status')
+                    ->label('Status')
+                    ->getStateUsing(fn (AttendanceRecap $record): string => $record->status()['label'])
+                    ->badge()
+                    ->color(fn (AttendanceRecap $record): string => match ($record->status()['key']) {
+                        'telat' => 'danger',
+                        'pulang_cepat' => 'warning',
+                        default => 'success',
+                    }),
                 TextColumn::make('late_minutes')
                     ->label('Telat (menit)')
                     ->numeric()

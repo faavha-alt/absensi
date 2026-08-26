@@ -95,10 +95,21 @@ Tabel `work_schedules` (saat ini 1 jadwal global) bisa dikembangkan menjadi per 
 > Status: **direncanakan**, implementasi oleh sesi AI (fase lanjutan). Checklist & roadmap di `PROGRESS.md`.
 > Pendekatan saat ini: tema overlay CSS (`public/css/tailadmin-theme.css`) di atas komponen Filament (AdminKit style), karena server produksi tidak punya Node untuk build tema Tailwind penuh.
 
+### Arah desain (keputusan — disetujui 2026-08-26)
+
+**"Clean Modern Light Admin" (gaya SaaS modern).** Bukan flat AdminKit, tapi refinement ke tampilan lebih segar & modern — tetap light untuk penggunaan kantor/harian.
+
+- Background putih/abu-putih lembut + banyak whitespace.
+- **Sidebar dark navy** (`#222e3c`) dipertahankan sebagai identitas & kontras, disempurnakan (grup menu jelas, ikon konsisten).
+- **Kartu**: border halus + radius sedang + shadow sangat tipis (bukan flat 0.25rem); stat card dengan ikon & hierarki jelas.
+- **Typografi**: Inter, angka besar untuk KPI.
+- **Warna status kehadiran** konsisten: Hadir `#2fb380`, Telat `#dc3545`, Pulang Cepat `#ffc107`, Alpa `#6c757d`, Libur `#adb5bd`.
+- **Dark mode**: didukung penuh (opsional; light tetap default).
+
 ### Prinsip
 - **Nilai fungsional dulu, kosmetik belakangan.** Tampilan harus memudahkan admin menjawab cepat: *siapa hadir hari ini, siapa telat, siapa belum hadir*.
 - **Status eksplisit & konsisten.** Selalu tampilkan badge status berwarna, bukan hanya angka menit.
-- **Token desain terpusat** (variabel CSS `--ak-*`): warna primary `#3b7ddd`, page bg `#f5f7fb`, sidebar navy `#222e3c`, radius `0.25rem`, shadow halus.
+- **Token desain terpusat** (variabel CSS `--ak-*`): warna primary `#3b7ddd`, page bg `#f5f7fb`, sidebar navy `#222e3c`, shadow halus.
 
 ### Layar & perbaikan
 1. **Dashboard** — stat cards + widget baru:
@@ -111,5 +122,6 @@ Tabel `work_schedules` (saat ini 1 jadwal global) bisa dikembangkan menjadi per 
 5. **Konsistensi** — login page, dark mode, halaman error/simple memakai token yang sama.
 
 ### Pendekatan theming (keputusan)
-- **Jangka pendek**: pertahankan CSS overlay, tapi rapikan — versi-pin (`?v=`), kurangi `!important` berlebih, komentari tiap blok, hindari selector class yang berubah antar-versi Filament.
+- **Utamakan theming asli Filament 4** (colors config + custom CSS yang rapi) sebagai fondasi — bukan overlay `!important` berlebihan yang rapuh. Cara ini didukung resmi dan tahan-update ([dev.to: Understanding Filament themes v4/v5](https://dev.to/filamentmastery/understanding-filament-themes-in-v4v5-from-colors-to-custom-css-57a5)).
+- **Jangka pendek**: pertahankan custom CSS tapi rapikan — versi-pin (`?v=`), kurangi `!important`, komentari tiap blok, hindari selector class yang berubah antar-versi Filament.
 - **Jangka menengah**: evaluasi tema Filament Tailwind penuh. Catatan: server AI ini punya **Node v24**, CloudPanel user `absensi` **tidak**. Build aset Vite bisa dilakukan di server AI lalu commit `public/build` terkompilasi, asalkan ada PHP untuk kompilasi blade pada build. Kalau akses PHP tersedia, ini jalur yang lebih presisi & tahan-update.

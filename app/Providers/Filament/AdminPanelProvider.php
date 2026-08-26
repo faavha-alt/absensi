@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Widgets\AttendanceOverview;
+use App\Filament\Widgets\TodayAttendance;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -33,11 +34,11 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::hex('#3b7ddd'),
+                'primary' => Color::hex('#3b82f6'),
                 'danger' => Color::hex('#dc3545'),
                 'success' => Color::hex('#2fb380'),
-                'warning' => Color::hex('#ffc107'),
-                'gray' => Color::hex('#6c757d'),
+                'warning' => Color::hex('#f59e0b'),
+                'gray' => Color::hex('#6b7280'),
             ])
             ->maxContentWidth(Width::Full)
             ->renderHook(
@@ -52,6 +53,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
                 AttendanceOverview::class,
+                TodayAttendance::class,
                 AccountWidget::class,
             ])
             ->plugins([

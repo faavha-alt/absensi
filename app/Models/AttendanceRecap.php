@@ -36,4 +36,23 @@ class AttendanceRecap extends Model
     {
         return $this->early_leave_minutes > 0;
     }
+
+    /**
+     * Status kehadiran untuk badge tampilan.
+     * Prioritas: Telat > Pulang Cepat > Hadir.
+     *
+     * @return array{key: string, label: string, class: string}
+     */
+    public function status(): array
+    {
+        if ($this->late_minutes > 0) {
+            return ['key' => 'telat', 'label' => 'Telat', 'class' => 'st-telat'];
+        }
+
+        if ($this->early_leave_minutes > 0) {
+            return ['key' => 'pulang_cepat', 'label' => 'Pulang Cepat', 'class' => 'st-pulang'];
+        }
+
+        return ['key' => 'hadir', 'label' => 'Hadir', 'class' => 'st-hadir'];
+    }
 }

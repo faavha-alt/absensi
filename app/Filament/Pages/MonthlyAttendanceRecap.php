@@ -117,4 +117,60 @@ class MonthlyAttendanceRecap extends Page implements HasForms
             ->sortByDesc('jumlah_telat')
             ->values();
     }
+
+    /**
+     * Data matriks pegawai x tanggal untuk bulan terpilih (hari kerja saja).
+     *
+     * @return array{employees: \Illuminate\Support\Collection, days: array<int, \Illuminate\Support\Carbon>, cells: array<string, array{c:string,label:string,title:string}>}
+     */
+    public function getMatrix(): array
+    {
+        $bulan = (int) ($this->data['bulan'] ?? now()->month);
+        $tahun = (int) ($this->data['tahun'] ?? now()->year);
+
+        $first = Carbon::create($tahun, $bulan, 1);
+
+        $days = [];
+        for ($d = 1; $d <= $first->daysInMonth; $d++) {
+            $date = Carbon::create($tahun, $bulan, $d);
+            if (! $date->isWeekend()) {
+                $days[] = $date;
+            }
+        }
+
+        $recaps = AttendanceRecap::whereYear('date', $tahun)
+            ->whereMonth('date', $bulan)
+            ->get()
+            ->keyBy(fn ($r) => $r->employee_id.'|'.$r->date->toDateString());
+
+        $employees = \App\Models\Employee::where('is_admin', false)
+            ->orderBy('name')
+            ->get();
+
+        $cellMap = [
+            'hadir' => ['c' => 'c-hadir', 'label' => 'H', 'title' => 'Hadir'],
+            'telat' => ['c' => 'c-telat', 'label' => 'T', 'title' => 'Telat'],
+            'pulang_cepat' => ['c' => 'c-pulang', 'label' => 'P', 'title' => 'Pulang Cepat'],
+        ];
+
+        $cells = [];
+
+        foreach ($employees as $emp) {
+            foreach ($days as $date) {
+                $key = $emp->id.'|'.$date->toDateString();
+                $recap = $recaps->get($key);
+
+                if (! $recap) {
+                    $cells[$key] = ['c' => 'c-alpa', 'label' => 'A', 'title' => 'Alpa'];
+                    continue;
+                }
+
+                $st = $recap->status();
+                $cell = $cellMap[$st['key']] ?? ['c' => 'c-hadir', 'label' => 'H', 'title' => 'Hadir'];
+                $cells[$key] = $cell;
+            }
+        }
+
+        return compact('employees', 'days', 'cells');
+    }
 }
