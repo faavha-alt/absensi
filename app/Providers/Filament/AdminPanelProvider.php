@@ -36,7 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->profile()
             ->colors([
-                'primary' => Color::hex('#3b82f6'),
+                'primary' => Color::hex('#4f46e5'),
                 'danger' => Color::hex('#dc3545'),
                 'success' => Color::hex('#2fb380'),
                 'warning' => Color::hex('#f59e0b'),

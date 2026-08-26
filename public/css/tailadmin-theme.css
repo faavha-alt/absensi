@@ -145,7 +145,7 @@
 .cal-cell.c-null .cal-num    { color: #d1d5db; }
 .cal-cell.c-null .cal-dot    { background: transparent; }
 .cal-cell.cal-today {
-    outline: 2px solid #3b82f6;
+    outline: 2px solid #4f46e5;
     outline-offset: 1px;
 }
 .dark .cal-cell { background: #161d2b; border-color: #232c3d; }

@@ -4,9 +4,9 @@
 @source '../../../../resources/views/filament/**/*';
 
 /*
-   Tema "Clean Modern Light Admin" — custom Tailwind untuk Filament 4.
-   Desain: light, whitespace luas, kartu ber-border halus, sidebar navy gelap,
-   primary biru modern. Token desain: lihat DESIGN.md §"Desain UI".
+   Tema "Soft Modern Light" — sidebar putih, aksen indigo, light & airy.
+   Terinspirasi gaya Linear/Stripe: banyak whitespace, komponen bersih,
+   shadow lembut, hierarki jelas. Token: DESIGN.md §"Desain UI".
 */
 
 @theme {
@@ -15,16 +15,19 @@
 }
 
 :root {
-    --ac-page-bg: #f4f6fb;
+    --ac-primary: #4f46e5;
+    --ac-page-bg: #f6f7fb;
     --ac-surface: #ffffff;
-    --ac-border: #e6eaf2;
-    --ac-sidebar-bg: #1b2434;
-    --ac-sidebar-text: rgba(226, 232, 240, 0.66);
-    --ac-sidebar-text-active: #ffffff;
+    --ac-border: #eceef3;
+    --ac-sidebar-bg: #ffffff;
+    --ac-sidebar-border: #e8ebf2;
+    --ac-sidebar-text: #5b6472;
+    --ac-sidebar-text-hover: #111827;
+    --ac-sidebar-text-active: #4f46e5;
     --ac-text: #1f2937;
     --ac-text-muted: #6b7280;
     --ac-radius: 0.75rem;
-    --ac-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 3px rgba(16, 24, 40, 0.06);
+    --ac-shadow: 0 1px 2px rgba(16, 24, 40, 0.05), 0 1px 3px rgba(16, 24, 40, 0.06);
 }
 
 html {
@@ -59,19 +62,20 @@ body,
     border-bottom: 1px solid var(--ac-border);
 }
 
-/* --- Sidebar navy gelap --- */
+/* --- Sidebar PUTIH (light, airy) --- */
 .fi-sidebar {
     background-color: var(--ac-sidebar-bg) !important;
+    border-right: 1px solid var(--ac-sidebar-border);
 }
 .fi-sidebar-header {
     background-color: var(--ac-sidebar-bg) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid var(--ac-sidebar-border);
 }
 .fi-sidebar-header-ctn * {
-    color: #ffffff !important;
+    color: var(--ac-text) !important;
 }
 .fi-sidebar-group-label {
-    color: rgba(226, 232, 240, 0.4) !important;
+    color: #9ca3af !important;
     text-transform: uppercase;
     font-size: 0.6875rem;
     letter-spacing: 0.05em;
@@ -80,25 +84,27 @@ body,
 .fi-sidebar-item-btn {
     color: var(--ac-sidebar-text) !important;
     border-left: 3px solid transparent;
-    border-radius: 0.375rem !important;
-    margin: 0 0.375rem;
+    border-radius: 0.5rem !important;
+    margin: 0.125rem 0.5rem;
     padding: 0.5rem 0.625rem;
+    transition: background-color 0.12s ease, color 0.12s ease;
 }
 .fi-sidebar-item-btn svg {
     color: var(--ac-sidebar-text) !important;
 }
 .fi-sidebar-item-btn:hover {
-    background: rgba(255, 255, 255, 0.06) !important;
-    color: var(--ac-sidebar-text-active) !important;
+    background: #f3f4f6 !important;
+    color: var(--ac-sidebar-text-hover) !important;
 }
 .fi-sidebar-item-btn:hover svg {
-    color: var(--ac-sidebar-text-active) !important;
+    color: var(--ac-sidebar-text-hover) !important;
 }
 .fi-sidebar-item-btn.fi-active,
 .fi-sidebar-item-has-active-child-items > .fi-sidebar-item-btn {
-    background: linear-gradient(90deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.05) 60%, transparent) !important;
-    border-left-color: #3b82f6 !important;
+    background: rgba(79, 70, 229, 0.08) !important;
+    border-left-color: var(--ac-primary) !important;
     color: var(--ac-sidebar-text-active) !important;
+    font-weight: 600;
 }
 .fi-sidebar-item-btn.fi-active svg {
     color: var(--ac-sidebar-text-active) !important;
@@ -134,7 +140,7 @@ body,
     color: var(--ac-text-muted);
 }
 .fi-ta-row:hover {
-    background-color: rgba(59, 130, 246, 0.035);
+    background-color: rgba(79, 70, 229, 0.04);
 }
 
 /* --- Halaman simple (login) --- */
@@ -145,9 +151,14 @@ body,
 
 /* --- Dark mode --- */
 .dark {
-    --ac-page-bg: #0f1420;
-    --ac-surface: #161d2b;
-    --ac-border: #232c3d;
+    --ac-page-bg: #0f1218;
+    --ac-surface: #171b24;
+    --ac-border: #262b37;
+    --ac-sidebar-bg: #171b24;
+    --ac-sidebar-border: #262b37;
+    --ac-sidebar-text: #9ca3af;
+    --ac-sidebar-text-hover: #e5e7eb;
+    --ac-sidebar-text-active: #a5b4fc;
     --ac-text: #e5e7eb;
     --ac-text-muted: #9ca3af;
 }
@@ -171,5 +182,5 @@ body,
     border-bottom-color: var(--ac-border) !important;
 }
 .dark .fi-ta-row:hover {
-    background-color: rgba(59, 130, 246, 0.08);
+    background-color: rgba(79, 70, 229, 0.1);
 }
