@@ -25,7 +25,7 @@ class ViewEmployee extends ViewRecord
     /**
      * Data kalender kehadiran bulan berjalan untuk pegawai ini.
      *
-     * @return array<int, array{day:int, date:\Illuminate\Support\Carbon, weekday:string, status:array{c:string,label:string,title:string}}>
+     * @return array<int, array{day:int, date:Carbon, weekday:string, status:array{c:string,label:string,title:string}}>
      */
     public function getCalendar(): array
     {

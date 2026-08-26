@@ -6,6 +6,7 @@ use App\Models\AttendanceRecap;
 use App\Models\Employee;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 class TodayAttendance extends Widget
 {
@@ -13,7 +14,7 @@ class TodayAttendance extends Widget
 
     protected string $view = 'filament.widgets.today-attendance';
 
-    public function getRows(): \Illuminate\Support\Collection
+    public function getRows(): Collection
     {
         $today = Carbon::today();
 

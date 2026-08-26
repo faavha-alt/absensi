@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Models\AttendanceRecap;
+use App\Models\Employee;
 use App\Services\MonthlyRecapExcelBuilder;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -121,7 +122,7 @@ class MonthlyAttendanceRecap extends Page implements HasForms
     /**
      * Data matriks pegawai x tanggal untuk bulan terpilih (hari kerja saja).
      *
-     * @return array{employees: \Illuminate\Support\Collection, days: array<int, \Illuminate\Support\Carbon>, cells: array<string, array{c:string,label:string,title:string}>}
+     * @return array{employees: Collection, days: array<int, Carbon>, cells: array<string, array{c:string,label:string,title:string}>}
      */
     public function getMatrix(): array
     {
@@ -143,7 +144,7 @@ class MonthlyAttendanceRecap extends Page implements HasForms
             ->get()
             ->keyBy(fn ($r) => $r->employee_id.'|'.$r->date->toDateString());
 
-        $employees = \App\Models\Employee::where('is_admin', false)
+        $employees = Employee::where('is_admin', false)
             ->orderBy('name')
             ->get();
 
@@ -162,6 +163,7 @@ class MonthlyAttendanceRecap extends Page implements HasForms
 
                 if (! $recap) {
                     $cells[$key] = ['c' => 'c-alpa', 'label' => 'A', 'title' => 'Alpa'];
+
                     continue;
                 }
 
