@@ -10,6 +10,12 @@ use Syofyanzuhad\FilamentZktecoAdms\Models\AttendanceLog;
 
 class AttendanceRecapCalculator
 {
+    /**
+     * Penalti pulang cepat (menit) yang diterapkan kalau pegawai tidak scan pulang sama sekali.
+     * Dibatasi maksimal segini supaya tidak dianggap 'pulang sangat cepat' tanpa batas.
+     */
+    protected const NO_CHECKOUT_EARLY_LEAVE_MINUTES = 60;
+
     public function recomputeForEmployeeAndDate(Employee $employee, Carbon $date): void
     {
         if ($employee->is_admin || $date->isWeekend()) {
@@ -46,8 +52,6 @@ class AttendanceRecapCalculator
             ? abs($checkIn->diffInMinutes($lateThreshold))
             : 0;
 
-        $earlyLeaveMinutes = 0;
-
         if ($checkOut) {
             $earlyLeaveThreshold = $date->copy()
                 ->setTimeFromTimeString($schedule->time_out->format('H:i:s'))
@@ -56,6 +60,9 @@ class AttendanceRecapCalculator
             $earlyLeaveMinutes = $checkOut->lt($earlyLeaveThreshold)
                 ? abs($earlyLeaveThreshold->diffInMinutes($checkOut))
                 : 0;
+        } else {
+            // Tidak ada scan pulang sama sekali -> anggap pulang cepat, dibatasi maksimal 1 jam.
+            $earlyLeaveMinutes = self::NO_CHECKOUT_EARLY_LEAVE_MINUTES;
         }
 
         AttendanceRecap::updateOrCreate(
