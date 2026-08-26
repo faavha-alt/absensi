@@ -11,7 +11,8 @@ use App\Filament\Resources\Employees\Schemas\EmployeeForm;
 use App\Filament\Resources\Employees\Tables\EmployeesTable;
 use App\Models\Employee;
 use BackedEnum;
-use Filament\Infolists\Components\Section;
+use Filament\Schemas\Components\Section;
+use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -45,7 +46,7 @@ class EmployeeResource extends Resource
                         TextEntry::make('position')->label('Jabatan')->placeholder('-'),
                         TextEntry::make('department')->label('Departemen')->placeholder('-'),
                         TextEntry::make('zkteco_pin')->label('PIN ZKTeco')->placeholder('-'),
-                        TextEntry::make('is_admin')
+                        IconEntry::make('is_admin')
                             ->label('Admin device')
                             ->boolean(),
                     ])
