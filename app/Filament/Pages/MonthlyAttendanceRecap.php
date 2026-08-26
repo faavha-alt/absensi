@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Models\AttendanceRecap;
+use App\Services\MonthlyRecapExcelBuilder;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
@@ -67,36 +68,29 @@ class MonthlyAttendanceRecap extends Page implements HasForms
     {
         return [
             Action::make('export')
-                ->label('Export CSV')
+                ->label('Export Excel')
                 ->icon('heroicon-o-arrow-down-tray')
-                ->action(fn () => $this->exportCsv()),
+                ->action(fn () => $this->exportExcel()),
         ];
     }
 
-    public function exportCsv(): StreamedResponse
+    public function exportExcel(): StreamedResponse
     {
         $bulan = (int) ($this->data['bulan'] ?? now()->month);
         $tahun = (int) ($this->data['tahun'] ?? now()->year);
         $rows = $this->getRows();
+        $bulanNama = self::$bulanOptions[$bulan] ?? (string) $bulan;
 
-        $filename = 'rekap-bulanan-'.$tahun.'-'.str_pad((string) $bulan, 2, '0', STR_PAD_LEFT).'.csv';
+        $tempPath = app(MonthlyRecapExcelBuilder::class)->build($rows, $bulanNama, $tahun);
 
-        return response()->streamDownload(function () use ($rows) {
-            $out = fopen('php://output', 'w');
-            fputcsv($out, ['Pegawai', 'Jumlah Hadir', 'Jumlah Telat', 'Total Menit Telat', 'Jumlah Pulang Cepat'], ',', '"', '\\');
+        $filename = 'rekap-bulanan-'.$tahun.'-'.str_pad((string) $bulan, 2, '0', STR_PAD_LEFT).'.xlsx';
 
-            foreach ($rows as $row) {
-                fputcsv($out, [
-                    $row->employee?->name ?? '-',
-                    $row->total_hadir,
-                    $row->jumlah_telat,
-                    $row->total_menit_telat,
-                    $row->jumlah_pulang_cepat,
-                ], ',', '"', '\\');
-            }
-
-            fclose($out);
-        }, $filename, ['Content-Type' => 'text/csv']);
+        return response()->streamDownload(function () use ($tempPath) {
+            echo file_get_contents($tempPath);
+            unlink($tempPath);
+        }, $filename, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        ]);
     }
 
     protected function availableYears(): array
