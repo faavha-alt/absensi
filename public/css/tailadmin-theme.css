@@ -1,26 +1,10 @@
 /* =========================================================================
-   Theme: "Clean Modern Light Admin" (gaya SaaS modern) applied on Filament 4.
-   Basis desain resmi: lihat DESIGN.md §"Desain UI".
-   Refinement dari AdminKit flat -> border halus, radius sedang, shadow tipis,
-   banyak whitespace, hierarki KPI jelas, badge status kehadiran.
+   Utilitas custom untuk komponen absensi (stat cards, badge, matriks, kalender).
+   Styling komponen Filament sendiri ditangani oleh tema asli
+   (resources/css/filament/admin/theme.css) — file ini hanya tambahan.
    ========================================================================= */
 
 :root {
-    --ak-primary: #3b82f6;          /* modern Tailwind blue-500 */
-    --ak-page-bg: #f4f6fa;          /* abu-putih lembut */
-    --ak-surface: #ffffff;
-    --ak-border: #e6eaf2;           /* border halus */
-    --ak-sidebar-bg: #1e2a3a;       /* navy gelap */
-    --ak-sidebar-bg-hover: rgba(255, 255, 255, 0.06);
-    --ak-sidebar-text: rgba(226, 232, 240, 0.62);
-    --ak-sidebar-text-hover: rgba(226, 232, 240, 0.92);
-    --ak-sidebar-text-active: #ffffff;
-    --ak-card-radius: 0.5rem;       /* radius sedang, modern */
-    --ak-card-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 3px rgba(16, 24, 40, 0.06);
-    --ak-topbar-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
-    --ak-text: #1f2937;
-    --ak-text-muted: #6b7280;
-
     /* Warna status kehadiran */
     --st-hadir: #2fb380;
     --st-telat: #dc3545;
@@ -29,69 +13,12 @@
     --st-libur: #7c8aa5;
 }
 
-/* --- Basis --- */
-html {
-    font-size: 14px;
-}
-
-body,
-.fi-body {
-    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
-    color: var(--ak-text);
-}
-
-/* --- Layout full width --- */
-.fi-main,
-.fi-main-ctn,
-.fi-simple-main,
-.fi-simple-main-ctn,
-main.fi-main {
-    max-width: 100% !important;
-    width: 100% !important;
-}
-
-.fi-body,
-.fi-main-ctn {
-    background-color: var(--ak-page-bg);
-}
-
-/* --- Surface: kartu dengan border halus, radius sedang, shadow tipis --- */
-.fi-section,
-.fi-ta-ctn,
-.fi-wi-stats-overview-stat,
-.fi-in-card,
-.fi-fo-component-ctn .fi-section,
-.fi-modal-window {
-    background-color: var(--ak-surface);
-    border: 1px solid var(--ak-border) !important;
-    border-radius: var(--ak-card-radius) !important;
-    box-shadow: var(--ak-card-shadow) !important;
-}
-
-.fi-section-header {
-    border-bottom: 1px solid var(--ak-border);
-}
-
-/* --- Stat cards (Filament) --- */
-.fi-wi-stats-overview-stat {
-    padding: 1.1rem 1.25rem;
-}
-.fi-wi-stats-overview-stat-header-ctn .fi-wi-stats-overview-stat-label {
-    color: var(--ak-text-muted);
-    font-weight: 500;
-    font-size: 0.8125rem;
-}
-.fi-wi-stats-overview-stat-number {
-    font-weight: 700;
-    letter-spacing: -0.01em;
-}
-
-/* --- Stat cards custom (dipakai di Rekap Bulanan & dashboard) --- */
+/* --- Stat cards custom (Rekap Bulanan & dashboard) --- */
 .tailadmin-stat-card {
-    background: var(--ak-surface);
-    border: 1px solid var(--ak-border);
-    border-radius: var(--ak-card-radius);
-    box-shadow: var(--ak-card-shadow);
+    background: #ffffff;
+    border: 1px solid #e6eaf2;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 3px rgba(16, 24, 40, 0.06);
     padding: 1.15rem 1.35rem;
     display: flex;
     align-items: center;
@@ -111,7 +38,7 @@ main.fi-main {
     height: 1.4rem;
 }
 .tailadmin-stat-label {
-    color: var(--ak-text-muted);
+    color: #6b7280;
     font-size: 0.8125rem;
     font-weight: 500;
 }
@@ -119,8 +46,13 @@ main.fi-main {
     font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: -0.01em;
-    color: var(--ak-text);
+    color: #1f2937;
 }
+.dark .tailadmin-stat-card {
+    background: #161d2b;
+    border-color: #232c3d;
+}
+.dark .tailadmin-stat-value { color: #e5e7eb; }
 
 /* --- Badge status kehadiran --- */
 .st-badge {
@@ -144,7 +76,6 @@ main.fi-main {
 .st-pulang    { color: var(--st-pulang-cepat); background: rgba(245, 158, 11, 0.14); }
 .st-alpa      { color: var(--st-alpa);     background: rgba(156, 163, 175, 0.16); }
 .st-libur     { color: var(--st-libur);    background: rgba(124, 138, 165, 0.16); }
-.st-hadir-var { color: var(--st-hadir); }
 
 /* --- Matriks Rekap Bulanan --- */
 .st-matrix th, .st-matrix td {
@@ -171,7 +102,7 @@ main.fi-main {
     writing-mode: vertical-rl;
     transform: rotate(180deg);
     font-size: 0.625rem;
-    color: var(--ak-text-muted);
+    color: #6b7280;
 }
 
 /* --- Kalender detail pegawai --- */
@@ -183,14 +114,14 @@ main.fi-main {
     gap: 0.2rem;
     min-height: 2.9rem;
     border-radius: 0.5rem;
-    border: 1px solid var(--ak-border);
-    background: var(--ak-surface);
+    border: 1px solid #e6eaf2;
+    background: #ffffff;
     cursor: default;
 }
 .cal-cell .cal-num {
     font-size: 0.75rem;
     font-weight: 600;
-    color: var(--ak-text);
+    color: #1f2937;
 }
 .cal-cell .cal-dot {
     width: 0.85rem;
@@ -210,126 +141,14 @@ main.fi-main {
 .cal-cell.c-weekend { border-color: transparent; background: transparent; }
 .cal-cell.c-weekend .cal-num { color: #d1d5db; }
 .cal-cell.c-weekend .cal-dot { background: transparent; }
-.cal-cell.c-null    { border-color: var(--ak-border); background: var(--ak-surface); }
+.cal-cell.c-null    { border-color: #e6eaf2; background: #ffffff; }
 .cal-cell.c-null .cal-num    { color: #d1d5db; }
 .cal-cell.c-null .cal-dot    { background: transparent; }
 .cal-cell.cal-today {
-    outline: 2px solid var(--ak-primary);
+    outline: 2px solid #3b82f6;
     outline-offset: 1px;
 }
-
-/* --- Sidebar: navy gelap, clean --- */
-.fi-sidebar {
-    background-color: var(--ak-sidebar-bg) !important;
-    box-shadow: none;
-}
-.fi-sidebar-header {
-    background-color: var(--ak-sidebar-bg) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-.fi-sidebar-header-ctn * {
-    color: #f8fafc !important;
-}
-.fi-sidebar-group-label {
-    color: rgba(226, 232, 240, 0.42) !important;
-    text-transform: uppercase;
-    font-size: 0.6875rem;
-    letter-spacing: 0.05em;
-    font-weight: 600;
-}
-.fi-sidebar-item-btn {
-    color: var(--ak-sidebar-text) !important;
-    border-left: 3px solid transparent;
-    border-radius: 0.375rem !important;
-    margin: 0 0.375rem;
-    padding: 0.5rem 0.625rem;
-    transition: background-color 0.12s ease, color 0.12s ease;
-}
-.fi-sidebar-item-btn svg {
-    color: var(--ak-sidebar-text) !important;
-}
-.fi-sidebar-item-btn:hover {
-    background: var(--ak-sidebar-bg-hover) !important;
-    color: var(--ak-sidebar-text-hover) !important;
-}
-.fi-sidebar-item-btn:hover svg {
-    color: var(--ak-sidebar-text-hover) !important;
-}
-.fi-sidebar-item-btn.fi-active,
-.fi-sidebar-item-has-active-child-items > .fi-sidebar-item-btn {
-    background: linear-gradient(90deg, rgba(59, 130, 246, 0.18), rgba(59, 130, 246, 0.06) 55%, transparent) !important;
-    border-left-color: var(--ak-primary);
-    color: var(--ak-sidebar-text-active) !important;
-}
-.fi-sidebar-item-btn.fi-active svg {
-    color: var(--ak-sidebar-text-active) !important;
-}
-
-/* --- Topbar --- */
-.fi-topbar nav {
-    box-shadow: var(--ak-topbar-shadow) !important;
-    border-bottom: 1px solid var(--ak-border) !important;
-    background-color: var(--ak-surface) !important;
-}
-
-/* --- Komponen --- */
-.fi-btn {
-    border-radius: 0.4375rem;
-    font-weight: 600;
-}
-.fi-badge {
-    border-radius: 9999px;
-    font-weight: 600;
-}
-.fi-input, .fi-text-input, .fi-select-input {
-    border-radius: 0.4375rem !important;
-}
-.fi-ta-row:hover {
-    background-color: rgba(59, 130, 246, 0.035);
-}
-.fi-ta-header-cell {
-    text-transform: uppercase;
-    font-size: 0.6875rem;
-    letter-spacing: 0.03em;
-    color: var(--ak-text-muted);
-}
-
-/* --- Halaman simple (login) --- */
-.fi-simple-page,
-.fi-simple-main-ctn {
-    background-color: var(--ak-page-bg);
-}
-
-/* =========================================================================
-   Dark mode
-   ========================================================================= */
-.dark {
-    --ak-page-bg: #0f1420;
-    --ak-surface: #161d2b;
-    --ak-border: #232c3d;
-    --ak-text: #e5e7eb;
-    --ak-text-muted: #9ca3af;
-}
-.dark .fi-body,
-.dark .fi-main-ctn,
-.dark .fi-simple-page,
-.dark .fi-simple-main-ctn {
-    background-color: var(--ak-page-bg);
-}
-.dark .fi-section,
-.dark .fi-ta-ctn,
-.dark .fi-wi-stats-overview-stat,
-.dark .fi-in-card,
-.dark .fi-fo-component-ctn .fi-section,
-.dark .fi-modal-window,
-.dark .tailadmin-stat-card {
-    background-color: var(--ak-surface);
-    border-color: var(--ak-border) !important;
-}
-.dark .fi-topbar nav {
-    background-color: var(--ak-surface) !important;
-    border-bottom-color: var(--ak-border) !important;
-}
-.dark .fi-ta-row:hover {
-    background-color: rgba(59, 130, 246, 0.08);
-}
+.dark .cal-cell { background: #161d2b; border-color: #232c3d; }
+.dark .cal-cell .cal-num { color: #e5e7eb; }
+.dark .cal-cell.c-null { background: #161d2b; border-color: #232c3d; }
+.dark .cal-cell.c-null .cal-num { color: #4b5563; }
