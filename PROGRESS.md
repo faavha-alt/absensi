@@ -13,7 +13,11 @@ Dibuat: 2026-08-26
 - [x] Tarik data pegawai (USERINFO) & histori absensi lama (ATTLOG) dari memori device via command ADMS
 - [x] Import 14 pegawai dari data device ke tabel `employees`
 - [ ] Lengkapi kode/NIP resmi & jabatan/departemen tiap pegawai (sementara employee_code = PIN)
-- [ ] v2: aturan jam kerja, status telat/pulang cepat/alpa, rekap bulanan/export
+- [x] Pengaturan jam kerja & toleransi (global, berlaku semua pegawai)
+- [x] Rekap harian otomatis (hadir/telat/pulang cepat) dari log mentah, auto-update real-time tiap ada scan baru
+- [x] Rekap agregat bulanan per pegawai (total kali telat, total menit telat, total pulang cepat)
+- [ ] Jadwal kerja per pegawai/departemen (v3, kalau kebutuhan berubah dari 1 jadwal global)
+- [ ] Export rekap (Excel/PDF)
 
 ## Log sesi
 
@@ -30,3 +34,9 @@ Dibuat: 2026-08-26
 - **Trik ambil data lama dari device**: kirim `DeviceCommand` custom via tinker (`DATA QUERY USERINFO` dan `DATA QUERY ATTLOG`) — device mengambilnya lewat polling `/iclock/getrequest` rutin, lalu push balik semua data historisnya. Hasil: 14 user (nama+PIN) dan 3.263 log absensi (1 Okt 2025 s/d sekarang) berhasil ditarik penuh dari memori device tanpa menghapus apa pun di alat.
 - Import otomatis 14 `Employee` dari data `zkteco_users` (employee_code sementara = PIN, perlu diisi NIP resmi belakangan).
 - Catatan: PIN `1` punya 2 log tapi tidak ada di data user (kemungkinan akun admin/test device, bukan pegawai) — diabaikan.
+- Push ke GitHub: `https://github.com/faavha-alt/absensi` (remote `origin`, branch `master`), pakai deploy key khusus (bukan SSH key pribadi user).
+- **Fitur rekap absensi v2 (parsial)**: tabel `work_schedules` (1 baris global: jam masuk, jam pulang, toleransi telat, toleransi pulang cepat, default 08:00–16:00) dan `attendance_recaps` (1 baris per pegawai per hari kerja: check_in, check_out, late_minutes, early_leave_minutes — Sabtu/Minggu tidak dihitung sama sekali, tidak dibuatkan baris rekap).
+- `App\Services\AttendanceRecapCalculator`: hitung status 1 hari (dipakai listener) & `recomputeAll()` untuk hitung ulang semua histori (dipanggil otomatis tiap pengaturan jam kerja disimpan). Kalau cuma 1x scan dalam sehari, `check_out` dibiarkan null (tidak dihitung pulang cepat) — hindari false positive "pulang sangat cepat".
+- Listener `RecomputeAttendanceRecap` (didaftarkan di `AppServiceProvider::boot()`) dengar event `AttendanceReceived` dari package ADMS → rekap ter-update otomatis real-time tiap device push data baru, tanpa perlu cron.
+- Filament: halaman `Pengaturan Jam Kerja` (`/admin/work-schedule-settings`) untuk set jam masuk/pulang & toleransi; resource read-only `Rekap Absensi` (`/admin/attendance-recaps`, per hari) dengan filter bulan/pegawai/"hanya yang telat"; halaman `Rekap Bulanan` (`/admin/monthly-attendance-recap`) menampilkan agregat per pegawai per bulan (jumlah hadir, jumlah telat, total menit telat, jumlah pulang cepat).
+- Semua halaman baru diverifikasi render tanpa error via simulasi request ter-autentikasi (tidak ada akses browser langsung di sesi ini).
