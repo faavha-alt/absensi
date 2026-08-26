@@ -1,9 +1,29 @@
-/* Custom theme skin approximating TailAdmin's visual identity for the Filament panel */
+/* Custom theme skin: modern, compact, full-width admin look (no Node/Vite build available) */
 
 :root {
-    --tailadmin-page-bg: #f2f4f7;
-    --tailadmin-card-radius: 0.75rem;
+    --tailadmin-page-bg: #f7f9fc;
+    --tailadmin-card-radius: 0.875rem;
     --tailadmin-card-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.06), 0 1px 2px 0 rgba(16, 24, 40, 0.04);
+    --tailadmin-card-shadow-hover: 0 4px 12px 0 rgba(16, 24, 40, 0.08);
+}
+
+html {
+    font-size: 14px;
+}
+
+body,
+.fi-body {
+    font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Force full width everywhere, regardless of which Filament width class is present */
+.fi-main,
+.fi-main-ctn,
+.fi-simple-main,
+.fi-simple-main-ctn,
+main.fi-main {
+    max-width: 100% !important;
+    width: 100% !important;
 }
 
 .fi-body,
@@ -13,7 +33,7 @@
 
 .dark .fi-body,
 .dark .fi-main-ctn {
-    background-color: #101828;
+    background-color: #0f1522;
 }
 
 .fi-section,
@@ -25,6 +45,12 @@
     border-radius: var(--tailadmin-card-radius) !important;
     box-shadow: var(--tailadmin-card-shadow) !important;
     border-width: 0 !important;
+    transition: box-shadow 150ms ease;
+}
+
+.fi-wi-stats-overview-stat:hover,
+.tailadmin-stat-card:hover {
+    box-shadow: var(--tailadmin-card-shadow-hover) !important;
 }
 
 .fi-sidebar {
@@ -36,7 +62,11 @@
 }
 
 .fi-sidebar-item-active .fi-sidebar-item-button {
-    border-radius: 0.5rem;
+    border-radius: 0.625rem;
+}
+
+.fi-sidebar-item-button {
+    border-radius: 0.625rem;
 }
 
 .fi-topbar nav {
@@ -47,13 +77,27 @@
     padding: 1.25rem 1.5rem;
 }
 
-.fi-btn.fi-color-primary,
-.fi-ac-btn-action.fi-color-primary {
+.fi-btn {
     border-radius: 0.5rem;
 }
 
 .fi-badge {
     border-radius: 9999px;
+}
+
+.fi-ta-row:hover {
+    background-color: rgba(70, 95, 255, 0.03);
+}
+
+.dark .fi-ta-row:hover {
+    background-color: rgba(70, 95, 255, 0.08);
+}
+
+.fi-ta-header-cell {
+    text-transform: uppercase;
+    font-size: 0.6875rem;
+    letter-spacing: 0.03em;
+    color: #667085;
 }
 
 .tailadmin-stat-card {
@@ -64,15 +108,16 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+    transition: box-shadow 150ms ease;
 }
 
 .dark .tailadmin-stat-card {
-    background: #1d2939;
+    background: #1a2233;
 }
 
 .tailadmin-stat-icon {
-    width: 3rem;
-    height: 3rem;
+    width: 2.75rem;
+    height: 2.75rem;
     border-radius: 0.75rem;
     display: flex;
     align-items: center;
@@ -81,6 +126,6 @@
 }
 
 .tailadmin-stat-icon svg {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.375rem;
+    height: 1.375rem;
 }

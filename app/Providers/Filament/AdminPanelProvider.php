@@ -32,6 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->font('Plus Jakarta Sans')
             ->colors([
                 'primary' => Color::hex('#465fff'),
                 'danger' => Color::hex('#f04438'),
@@ -42,7 +43,7 @@ class AdminPanelProvider extends PanelProvider
             ->maxContentWidth(Width::Full)
             ->renderHook(
                 PanelsRenderHook::HEAD_END,
-                fn () => new HtmlString('<link rel="stylesheet" href="/css/tailadmin-theme.css?v=1">')
+                fn () => new HtmlString('<link rel="stylesheet" href="/css/tailadmin-theme.css?v=4">')
             )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
