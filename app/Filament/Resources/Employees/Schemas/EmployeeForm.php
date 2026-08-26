@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Employees\Schemas;
 
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 
 class EmployeeForm
@@ -26,6 +27,9 @@ class EmployeeForm
                     ->label('PIN ZKTeco')
                     ->helperText('PIN pegawai sesuai yang terdaftar di alat MB20 (lihat menu ZKTeco ADMS > Zkteco Users setelah pegawai pernah absen).')
                     ->unique(ignoreRecord: true),
+                Toggle::make('is_admin')
+                    ->label('Admin device')
+                    ->helperText('Aktifkan kalau pegawai ini adalah admin/pengelola alat MB20 — absensinya tidak akan dihitung di Rekap Absensi maupun Rekap Bulanan.'),
             ]);
     }
 }

@@ -12,7 +12,7 @@ class AttendanceRecapCalculator
 {
     public function recomputeForEmployeeAndDate(Employee $employee, Carbon $date): void
     {
-        if ($date->isWeekend()) {
+        if ($employee->is_admin || $date->isWeekend()) {
             AttendanceRecap::where('employee_id', $employee->id)
                 ->whereDate('date', $date)
                 ->delete();
@@ -73,7 +73,9 @@ class AttendanceRecapCalculator
     {
         $count = 0;
 
-        $employees = Employee::whereNotNull('zkteco_pin')->get();
+        $employees = Employee::whereNotNull('zkteco_pin')->where('is_admin', false)->get();
+
+        AttendanceRecap::whereIn('employee_id', Employee::where('is_admin', true)->pluck('id'))->delete();
 
         foreach ($employees as $employee) {
             $dates = AttendanceLog::where('pin', $employee->zkteco_pin)

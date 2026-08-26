@@ -13,6 +13,11 @@ class Employee extends Model
         'position',
         'department',
         'zkteco_pin',
+        'is_admin',
+    ];
+
+    protected $casts = [
+        'is_admin' => 'boolean',
     ];
 
     public function attendanceLogs()
