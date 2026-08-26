@@ -32,18 +32,17 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->font('Plus Jakarta Sans')
             ->colors([
-                'primary' => Color::hex('#465fff'),
-                'danger' => Color::hex('#f04438'),
-                'success' => Color::hex('#12b76a'),
-                'warning' => Color::hex('#f79009'),
-                'gray' => Color::hex('#667085'),
+                'primary' => Color::hex('#3b7ddd'),
+                'danger' => Color::hex('#dc3545'),
+                'success' => Color::hex('#2fb380'),
+                'warning' => Color::hex('#ffc107'),
+                'gray' => Color::hex('#6c757d'),
             ])
             ->maxContentWidth(Width::Full)
             ->renderHook(
                 PanelsRenderHook::HEAD_END,
-                fn () => new HtmlString('<link rel="stylesheet" href="/css/tailadmin-theme.css?v=4">')
+                fn () => new HtmlString('<link rel="stylesheet" href="/css/tailadmin-theme.css?v=5">')
             )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')

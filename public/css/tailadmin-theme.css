@@ -1,10 +1,15 @@
-/* Custom theme skin: modern, compact, full-width admin look (no Node/Vite build available) */
+/* Theme inspired by AdminKit (https://demo-basic.adminkit.io/) applied on top of Filament's own components. */
 
 :root {
-    --tailadmin-page-bg: #f7f9fc;
-    --tailadmin-card-radius: 0.875rem;
-    --tailadmin-card-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.06), 0 1px 2px 0 rgba(16, 24, 40, 0.04);
-    --tailadmin-card-shadow-hover: 0 4px 12px 0 rgba(16, 24, 40, 0.08);
+    --ak-primary: #3b7ddd;
+    --ak-page-bg: #f5f7fb;
+    --ak-sidebar-bg: #222e3c;
+    --ak-sidebar-text: rgba(233, 236, 239, 0.5);
+    --ak-sidebar-text-hover: rgba(233, 236, 239, 0.75);
+    --ak-sidebar-text-active: #e9ecef;
+    --ak-card-radius: 0.25rem;
+    --ak-card-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.05);
+    --ak-topbar-shadow: 0 0 2rem 0 rgba(33, 37, 41, 0.1);
 }
 
 html {
@@ -13,10 +18,10 @@ html {
 
 body,
 .fi-body {
-    font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
 
-/* Force full width everywhere, regardless of which Filament width class is present */
+/* Full width */
 .fi-main,
 .fi-main-ctn,
 .fi-simple-main,
@@ -28,97 +33,44 @@ main.fi-main {
 
 .fi-body,
 .fi-main-ctn {
-    background-color: var(--tailadmin-page-bg);
+    background-color: var(--ak-page-bg);
 }
 
 .dark .fi-body,
 .dark .fi-main-ctn {
-    background-color: #0f1522;
+    background-color: #151b26;
 }
 
+/* Cards: flatter, minimal radius, subtle shadow (AdminKit style, not heavily rounded) */
 .fi-section,
 .fi-ta-ctn,
 .fi-wi-stats-overview-stat,
 .fi-in-card,
 .fi-fo-component-ctn .fi-section,
 .fi-modal-window {
-    border-radius: var(--tailadmin-card-radius) !important;
-    box-shadow: var(--tailadmin-card-shadow) !important;
+    border-radius: var(--ak-card-radius) !important;
+    box-shadow: var(--ak-card-shadow) !important;
     border-width: 0 !important;
-    transition: box-shadow 150ms ease;
-}
-
-.fi-wi-stats-overview-stat:hover,
-.tailadmin-stat-card:hover {
-    box-shadow: var(--tailadmin-card-shadow-hover) !important;
-}
-
-.fi-sidebar {
-    box-shadow: 1px 0 2px 0 rgba(16, 24, 40, 0.04);
-}
-
-.fi-sidebar-nav-groups {
-    gap: 1.25rem;
-}
-
-.fi-sidebar-item-active .fi-sidebar-item-button {
-    border-radius: 0.625rem;
-}
-
-.fi-sidebar-item-button {
-    border-radius: 0.625rem;
-}
-
-.fi-topbar nav {
-    box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
-}
-
-.fi-wi-stats-overview-stat {
-    padding: 1.25rem 1.5rem;
-}
-
-.fi-btn {
-    border-radius: 0.5rem;
-}
-
-.fi-badge {
-    border-radius: 9999px;
-}
-
-.fi-ta-row:hover {
-    background-color: rgba(70, 95, 255, 0.03);
-}
-
-.dark .fi-ta-row:hover {
-    background-color: rgba(70, 95, 255, 0.08);
-}
-
-.fi-ta-header-cell {
-    text-transform: uppercase;
-    font-size: 0.6875rem;
-    letter-spacing: 0.03em;
-    color: #667085;
 }
 
 .tailadmin-stat-card {
     background: #ffffff;
-    border-radius: var(--tailadmin-card-radius);
-    box-shadow: var(--tailadmin-card-shadow);
+    border-radius: var(--ak-card-radius);
+    box-shadow: var(--ak-card-shadow);
     padding: 1.25rem 1.5rem;
     display: flex;
     align-items: center;
     gap: 1rem;
-    transition: box-shadow 150ms ease;
 }
 
 .dark .tailadmin-stat-card {
-    background: #1a2233;
+    background: #1e2733;
 }
 
 .tailadmin-stat-icon {
     width: 2.75rem;
     height: 2.75rem;
-    border-radius: 0.75rem;
+    border-radius: var(--ak-card-radius);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -128,4 +80,87 @@ main.fi-main {
 .tailadmin-stat-icon svg {
     width: 1.375rem;
     height: 1.375rem;
+}
+
+/* Sidebar: dark navy, AdminKit style */
+.fi-sidebar {
+    background-color: var(--ak-sidebar-bg) !important;
+    box-shadow: none;
+}
+
+.fi-sidebar-header {
+    background-color: var(--ak-sidebar-bg) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.fi-sidebar-header-ctn * {
+    color: #f8f9fa !important;
+}
+
+.fi-sidebar-group-label {
+    color: rgba(233, 236, 239, 0.4) !important;
+    text-transform: uppercase;
+    font-size: 0.6875rem;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+}
+
+.fi-sidebar-item-btn {
+    color: var(--ak-sidebar-text) !important;
+    border-left: 3px solid transparent;
+    border-radius: 0 !important;
+    transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+}
+
+.fi-sidebar-item-btn svg {
+    color: var(--ak-sidebar-text) !important;
+}
+
+.fi-sidebar-item-btn:hover {
+    background: rgba(59, 125, 221, 0.1) !important;
+    color: var(--ak-sidebar-text-hover) !important;
+}
+
+.fi-sidebar-item-btn:hover svg {
+    color: var(--ak-sidebar-text-hover) !important;
+}
+
+.fi-sidebar-item-btn.fi-active,
+.fi-sidebar-item-has-active-child-items > .fi-sidebar-item-btn {
+    background: linear-gradient(90deg, rgba(59, 125, 221, 0.15), rgba(59, 125, 221, 0.08) 50%, transparent) !important;
+    border-left-color: var(--ak-primary);
+    color: var(--ak-sidebar-text-active) !important;
+}
+
+.fi-sidebar-item-btn.fi-active svg {
+    color: var(--ak-sidebar-text-active) !important;
+}
+
+/* Topbar */
+.fi-topbar nav {
+    box-shadow: var(--ak-topbar-shadow) !important;
+    border-bottom: 0 !important;
+}
+
+.fi-btn {
+    border-radius: var(--ak-card-radius);
+}
+
+.fi-badge {
+    border-radius: 9999px;
+}
+
+.fi-ta-row:hover {
+    background-color: rgba(59, 125, 221, 0.03);
+}
+
+.dark .fi-ta-row:hover {
+    background-color: rgba(59, 125, 221, 0.08);
+}
+
+.fi-ta-header-cell {
+    text-transform: uppercase;
+    font-size: 0.6875rem;
+    letter-spacing: 0.03em;
+    color: #939ba2;
 }
