@@ -33,11 +33,11 @@ Dibuat: 2026-08-26
 > Implementasi UI direncanakan & dikerjakan oleh sesi AI pada fase lanjutan (bukan bagian TASKS.md untuk Claude Code).
 > Detail desain di `DESIGN.md` §"Desain UI".
 
-- [ ] Dashboard: tambah widget "Kehadiran Hari Ini" (sudah hadir / belum hadir / telat / pulang cepat) + widget status device
-- [ ] Badge status kehadiran eksplisit (Hadir / Telat / Pulang Cepat / Alpa / Libur) di Rekap Harian & Bulanan
-- [ ] Rekap Bulanan: matriks pegawai × tanggal (H/T/P/A/L) + klik sel → detail harian
-- [ ] Detail pegawai: kalender bulan berjalan dengan warna status
-- [ ] Konsistensi tema: halaman login, dark mode, halaman error/simple
+- [x] Dashboard: tambah widget "Kehadiran Hari Ini" (sudah hadir / belum hadir / telat / pulang cepat) — widget status device menyusul
+- [x] Badge status kehadiran eksplisit (Hadir / Telat / Pulang Cepat / Alpa / Libur) di Rekap Harian & Bulanan
+- [x] Rekap Bulanan: matriks pegawai × tanggal (H/T/P/A/L) + legenda (klik sel → detail harian masih menyusul)
+- [x] Detail pegawai: kalender bulan berjalan dengan warna status (termasuk hari libur dari tabel `holidays`)
+- [x] Konsistensi tema: halaman login, dark mode, halaman error/simple
 - [ ] Rapikan pendekatan theming (CSS overlay rapuh): versi-pin, kurangi `!important`, dokumentasikan opsi tema Filament Tailwind penuh
 
 ## Roadmap UI (2026-08-26)
