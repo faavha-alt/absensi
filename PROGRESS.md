@@ -38,7 +38,7 @@ Dibuat: 2026-08-26
 - [x] Rekap Bulanan: matriks pegawai × tanggal (H/T/P/A/L) + legenda (klik sel → detail harian masih menyusul)
 - [x] Detail pegawai: kalender bulan berjalan dengan warna status (termasuk hari libur dari tabel `holidays`)
 - [x] Konsistensi tema: halaman login, dark mode, halaman error/simple
-- [ ] Rapikan pendekatan theming (CSS overlay rapuh): versi-pin, kurangi `!important`, dokumentasikan opsi tema Filament Tailwind penuh
+- [x] Bangun tema Filament asli (Tailwind) `resources/css/filament/admin/theme.css` + registrasi `->viteTheme()` — ganti pendekatan CSS-overlay. `public/css/tailadmin-theme.css` kini hanya utilitas custom (stat card, badge, matriks, kalender). Aset di-build di server AI (Node tersedia) → `public/build` di-deploy via scp ke CloudPanel (server produksi tidak perlu Node).
 
 ## Roadmap UI (2026-08-26)
 
