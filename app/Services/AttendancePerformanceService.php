@@ -121,13 +121,25 @@ class AttendancePerformanceService
 
     /**
      * Jumlah hari kerja (Senin–Jumat dikurangi libur) dalam 1 bulan.
+     * Untuk tahun berjalan: bulan yang belum berjalan = 0, bulan berjalan dihitung
+     * sampai hari ini saja (bukan sebulan penuh).
      */
     protected function workdaysInMonth(int $year, int $month): int
     {
         $start = Carbon::create($year, $month, 1);
+        $today = Carbon::today();
+
+        // Bulan yang belum berjalan (di tahun berjalan / masa depan) tidak dihitung.
+        if ($start->gt($today)) {
+            return 0;
+        }
+
+        // Bulan berjalan: batasi sampai hari ini.
+        $lastDay = $start->isSameMonth($today) ? $today->day : $start->daysInMonth;
+
         $workdays = 0;
 
-        for ($d = 1; $d <= $start->daysInMonth; $d++) {
+        for ($d = 1; $d <= $lastDay; $d++) {
             $date = Carbon::create($year, $month, $d);
             if (! $date->isWeekend()) {
                 $workdays++;
@@ -137,7 +149,7 @@ class AttendancePerformanceService
         $holidays = Holiday::whereYear('date', $year)
             ->whereMonth('date', $month)
             ->get()
-            ->filter(fn (Holiday $h) => ! $h->date->isWeekend())
+            ->filter(fn (Holiday $h) => ! $h->date->isWeekend() && $h->date->day <= $lastDay)
             ->count();
 
         return max(0, $workdays - $holidays);
