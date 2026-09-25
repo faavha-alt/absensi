@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EmployeeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,7 +37,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/kehadiran', fn () => $soon('Kehadiran Hari Ini', 'Fase 1 · Pantau', 'Papan real-time: sudah masuk, telat, belum absen, dan sudah pulang.'))->name('kehadiran.index');
     Route::get('/perangkat', fn () => $soon('Perangkat', 'Fase 5 · Pantau', 'Status perangkat ZKTeco, waktu sinkronisasi terakhir, dan log device.'))->name('perangkat.index');
 
-    Route::get('/pegawai', fn () => $soon('Data Pegawai', 'Fase 2 · Kepegawaian', 'Daftar & detail pegawai, kalender kehadiran bulanan, dan performa pribadi.'))->name('pegawai.index');
+    Route::get('/pegawai', [EmployeeController::class, 'index'])->name('pegawai.index');
+    Route::get('/pegawai/create', [EmployeeController::class, 'create'])->name('pegawai.create');
+    Route::post('/pegawai', [EmployeeController::class, 'store'])->name('pegawai.store');
+    Route::get('/pegawai/{employee}', [EmployeeController::class, 'show'])->name('pegawai.show');
+    Route::get('/pegawai/{employee}/edit', [EmployeeController::class, 'edit'])->name('pegawai.edit');
+    Route::put('/pegawai/{employee}', [EmployeeController::class, 'update'])->name('pegawai.update');
+    Route::delete('/pegawai/{employee}', [EmployeeController::class, 'destroy'])->name('pegawai.destroy');
 
     Route::get('/rekap-harian', fn () => $soon('Rekap Harian', 'Fase 3 · Rekap', 'Rekap kehadiran per hari dengan filter pegawai/status dan export Excel.'))->name('rekap.harian');
     Route::get('/rekap-bulanan', fn () => $soon('Rekap Bulanan', 'Fase 3 · Rekap', 'Matriks pegawai × tanggal (H/T/P/A/L) beserta ringkasan dan export.'))->name('rekap.bulanan');

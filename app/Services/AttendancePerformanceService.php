@@ -154,4 +154,63 @@ class AttendancePerformanceService
 
         return max(0, $workdays - $holidays);
     }
+
+    /**
+     * Data kalender kehadiran 1 pegawai untuk 1 bulan (dipakai halaman detail pegawai).
+     *
+     * @return array<int, array{day:int, date:Carbon, weekday:string, is_today:bool, status:array{c:string,label:string,title:string}}>
+     */
+    public function calendarForEmployee(int $employeeId, Carbon $month): array
+    {
+        $recaps = AttendanceRecap::where('employee_id', $employeeId)
+            ->whereYear('date', $month->year)
+            ->whereMonth('date', $month->month)
+            ->get()
+            ->keyBy(fn (AttendanceRecap $r) => (int) $r->date->format('d'));
+
+        $holidays = Holiday::whereYear('date', $month->year)
+            ->whereMonth('date', $month->month)
+            ->get()
+            ->keyBy(fn (Holiday $h) => (int) $h->date->format('d'));
+
+        $today = Carbon::today();
+
+        $cellMap = [
+            'hadir' => ['c' => 'c-hadir', 'label' => 'H'],
+            'telat' => ['c' => 'c-telat', 'label' => 'T'],
+            'pulang_cepat' => ['c' => 'c-pulang', 'label' => 'P'],
+        ];
+
+        $days = [];
+
+        for ($d = 1; $d <= $month->daysInMonth; $d++) {
+            $date = Carbon::create($month->year, $month->month, $d);
+            $recap = $recaps->get($d);
+            $holiday = $holidays->get($d);
+
+            if ($date->isWeekend()) {
+                $status = ['c' => 'c-weekend', 'label' => '•', 'title' => 'Akhir Pekan'];
+            } elseif ($holiday) {
+                $status = ['c' => 'c-libur', 'label' => 'L', 'title' => 'Libur: '.$holiday->name];
+            } elseif ($date->gt($today)) {
+                $status = ['c' => 'c-null', 'label' => '·', 'title' => ''];
+            } elseif (! $recap) {
+                $status = ['c' => 'c-alpa', 'label' => 'A', 'title' => 'Alpa'];
+            } else {
+                $st = $recap->status();
+                $cell = $cellMap[$st['key']] ?? ['c' => 'c-hadir', 'label' => 'H'];
+                $status = ['c' => $cell['c'], 'label' => $cell['label'], 'title' => $st['label']];
+            }
+
+            $days[] = [
+                'day' => $d,
+                'date' => $date,
+                'weekday' => $date->translatedFormat('D'),
+                'is_today' => $date->isSameDay($today),
+                'status' => $status,
+            ];
+        }
+
+        return $days;
+    }
 }

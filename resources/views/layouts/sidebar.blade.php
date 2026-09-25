@@ -6,7 +6,7 @@
             ['label' => 'Perangkat', 'route' => 'perangkat.index', 'icon' => 'device', 'soon' => true],
         ],
         'Kepegawaian' => [
-            ['label' => 'Data Pegawai', 'route' => 'pegawai.index', 'icon' => 'users', 'soon' => true],
+            ['label' => 'Data Pegawai', 'route' => 'pegawai.index', 'icon' => 'users'],
         ],
         'Rekap' => [
             ['label' => 'Rekap Harian', 'route' => 'rekap.harian', 'icon' => 'calendar-day', 'soon' => true],

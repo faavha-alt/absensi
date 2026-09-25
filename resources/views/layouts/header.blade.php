@@ -14,6 +14,8 @@
     </div>
 
     <div class="flex items-center gap-3">
+        @yield('actions')
+
         <div class="hidden items-center gap-2 rounded-2xl border border-slate-200/60 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-600 sm:flex">
             <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
             <span class="text-[11px] text-slate-400">Hari ini</span>
