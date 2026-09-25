@@ -181,3 +181,12 @@ Detail lengkap di `REVIEW.md`. Prioritas menurun.
 - `GenericExcelBuilder` (baru) — builder judul+header+baris untuk laporan umum; `AttendancePerformanceService::summarize()` ditambahkan agar dipakai bersama.
 - **Verifikasi server**: 4 route terdaftar; performa render 37,5 KB (2 chart), tahunan 34,9 KB (2 chart + 16 badge peringkat); kedua ekspor mengembalikan `StreamedResponse`; builder generik menghasilkan xlsx 4,7 KB.
 - **Handoff berikutnya**: **F5 Pengaturan** (Jam Kerja, Hari Libur, Akun & Keamanan, Perangkat) — route `pengaturan.*` masih placeholder `soon`; butuh endpoint tulis (POST/PUT) + pemanggilan `attendance:recompute-recaps` setelah ubah jam kerja/libur. Lalu **F6 poles** (responsif, aksesibilitas, keyboard, skeleton). RBAC/peran (SPEC §1) belum diimplementasi.
+
+### 2026-09-25 (F5 — Pengaturan SELESAI)
+
+- **Jam Kerja** (`/pengaturan/jam-kerja`): form jam masuk/pulang + toleransi; simpan -> `WorkSchedule` diperbarui -> **`recomputeAll()` otomatis** -> pesan jumlah hari-pegawai dihitung ulang. Kartu penjelasan aturan telat/pulang cepat/check-out valid.
+- **Hari Libur** (`/pengaturan/libur`): filter tahun, tambah (tanggal + keterangan), hapus; tiap perubahan -> recompute. Server sudah punya 25 hari libur 2026.
+- **Akun & Keamanan** (`/pengaturan/akun`): daftar akun admin, tambah akun (sandi `hashed` otomatis), ganti sandi (form `<details>` per baris), hapus (cegah hapus diri sendiri & akun terakhir). Kartu keamanan menampilkan status auto-register, whitelist IP, log audit `adms`, dan endpoint `/iclock/*`.
+- **Perangkat** (`/perangkat`): KPI (online/total, scan hari ini, total scan, scan terakhir), kartu per device (SN, model, IP, firmware, push ver., aktivitas terakhir, badge online/offline), tabel log scan mentah 30 terakhir dengan nama pegawai.
+- **Verifikasi server**: 10 route baru terdaftar; render jam-kerja 22,9 KB, libur 54,2 KB (25 hari libur), akun 26,5 KB, perangkat 40,7 KB; `recomputeAll()` 1.591 hari-pegawai.
+- **Sisa**: halaman **"Kehadiran Hari Ini"** (`/kehadiran`) masih placeholder `soon` (fungsi intinya sudah ada di tabel dashboard). Lalu **F6 poles**: responsif, aksesibilitas, keyboard, skeleton loading, audit kontras. RBAC/peran (SPEC §1) belum diimplementasi.
