@@ -127,7 +127,9 @@
                     </select>
                 </form>
             </div>
-            <canvas id="empTrend" height="150"></canvas>
+            <div style="position: relative; height: 240px; width: 100%;">
+                <canvas id="empTrend"></canvas>
+            </div>
         </div>
     </div>
 

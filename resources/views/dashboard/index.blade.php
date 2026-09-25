@@ -87,7 +87,9 @@
                 </div>
             </div>
 
-            <canvas id="trendChart" height="110"></canvas>
+            <div style="position: relative; height: 260px; width: 100%;">
+                <canvas id="trendChart"></canvas>
+            </div>
 
             <div class="mt-4 grid grid-cols-3 gap-2 border-t border-slate-100 pt-4 text-center">
                 <div>
