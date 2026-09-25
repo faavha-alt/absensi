@@ -1,9 +1,125 @@
 @import 'tailwindcss';
 
+@source '../../resources/views/**/*.blade.php';
+@source '../../app/**/*.php';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
+/* =========================================================================
+   AeroDeck UI — token & komponen dasar (glassmorphism, Apple/Tesla style).
+   Acuan: skill ui-dashboard-aerodeck.
+   ========================================================================= */
+
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
+
+html {
+    background-color: #f4f4f6;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Angka: monospace tabular supaya rapi sejajar */
+.font-mono-num {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-feature-settings: 'tnum' 1;
+}
+
+/* Kartu glass */
+.apple-glass-card {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.02),
+        0 12px 24px -4px rgba(0, 0, 0, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.apple-interactive-card {
+    transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-interactive-card:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 8px 12px -2px rgba(0, 0, 0, 0.03),
+        0 20px 32px -6px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+/* Scrollbar halus */
+.custom-scroll::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+    background: rgba(203, 213, 225, 0.6);
+    border-radius: 9999px;
+}
+
+/* Badge status kehadiran */
+.badge-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: 9999px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+.badge-status .dot {
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 9999px;
+    background: currentColor;
+}
+
+.badge-hadir { color: #059669; background: #ecfdf5; border: 1px solid #d1fae5; }
+.badge-telat { color: #e11d48; background: #fff1f2; border: 1px solid #ffe4e6; }
+.badge-pulang { color: #d97706; background: #fffbeb; border: 1px solid #fef3c7; }
+.badge-alpa { color: #64748b; background: #f8fafc; border: 1px solid #e2e8f0; }
+.badge-libur { color: #6366f1; background: #eef2ff; border: 1px solid #e0e7ff; }
+
+/* Kalender kehadiran */
+.cal-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.15rem;
+    min-height: 2.75rem;
+    border-radius: 0.875rem;
+    border: 1px solid #eef0f4;
+    background: #ffffff;
+}
+
+.cal-cell .cal-num { font-size: 0.75rem; font-weight: 700; color: #1e293b; }
+.cal-cell .cal-dot { width: 0.75rem; height: 0.75rem; border-radius: 9999px; }
+
+.cal-cell.c-hadir { border-color: #d1fae5; background: #f0fdf9; }
+.cal-cell.c-hadir .cal-dot { background: #10b981; }
+.cal-cell.c-telat { border-color: #ffe4e6; background: #fff5f6; }
+.cal-cell.c-telat .cal-dot { background: #e11d48; }
+.cal-cell.c-pulang { border-color: #fef3c7; background: #fffcf0; }
+.cal-cell.c-pulang .cal-dot { background: #f59e0b; }
+.cal-cell.c-alpa { border-color: #e2e8f0; background: #f8fafc; }
+.cal-cell.c-alpa .cal-dot { background: #94a3b8; }
+.cal-cell.c-libur { border-color: #e0e7ff; background: #f5f7ff; }
+.cal-cell.c-libur .cal-dot { background: #6366f1; }
+.cal-cell.c-weekend { border-color: transparent; background: transparent; }
+.cal-cell.c-weekend .cal-num { color: #cbd5e1; }
+.cal-cell.c-weekend .cal-dot { background: transparent; }
+.cal-cell.c-null { border-color: #eef0f4; background: #ffffff; }
+.cal-cell.c-null .cal-num { color: #cbd5e1; }
+.cal-cell.c-null .cal-dot { background: transparent; }
+.cal-cell.cal-today { outline: 2px solid #4f46e5; outline-offset: 1px; }
