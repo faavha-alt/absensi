@@ -215,3 +215,14 @@ F0 ✅ · F1 ✅ · F2 ✅ · F3 ✅ · F4 ✅ · F5 ✅ · F6 ✅ — **seluruh
   - Badge di dashboard/kehadiran/pegawai/rekap otomatis ikut (closure `$badge` disederhanakan memakai `status()['class']`).
 - **Verifikasi server**: 4 route terdaftar; halaman render 29,7 KB; uji siklus penuh pada pegawai nyata tanggal 2026-09-17 — sebelum "Pulang Cepat" -> saat izin "Izin (leave_type=izin)" -> setelah dihapus kembali "Pulang Cepat"; **0 sisa data uji**.
 - **Catatan**: test suite masih 4 GAGAL (`UserManagementTest` menargetkan komponen Filament `EditUser` yang dihapus) — perlu ditulis ulang ke alur `/pengaturan/akun` + tambah test modul baru.
+
+### 2026-09-25 (Perbaikan: status izin & agregat hadir)
+
+Dilaporkan user: "status cuti jadi libur, bukan sesuai izinnya". Hasil pemeriksaan menyeluruh menemukan **2 masalah**:
+
+1. **Legenda tidak lengkap** (penyebab kesan "jadi libur"): sel kalender/matriks sebenarnya sudah benar (`c-izin` / "Izin"), tapi legenda kalender detail pegawai & matriks Rekap Bulanan hanya memuat Hadir/Telat/Pulang Cepat/Alpa/**Libur** — tidak ada Izin/Sakit/Cuti/Dinas. Ditambahkan 4 entri legenda di kedua tempat.
+2. **BUG AGREGAT (lebih serius)**: baris izin tersimpan di `attendance_recaps`, sehingga semua query `COUNT(*) as hadir` **menghitung hari izin sebagai Hadir** -> angka hadir, % kehadiran, dan "belum absen" salah. Diperbaiki di **semua** titik: `AttendancePerformanceService` (`monthlyForEmployee`, `monthlyTotals`, `monthlyByEmployee`, `yearlyByEmployee`, `summarize`), `DashboardController` (KPI + tren + belum absen), `RekapController::dailySummary`, dan `KehadiranController` (hitungan chip). Rumus baru: `hadir = SUM(leave_type IS NULL)`, `izin = SUM(leave_type IS NOT NULL)`.
+
+Tambahan: chip **Izin/Cuti** di Kehadiran Hari Ini, KPI + filter "Hanya izin/cuti" di Rekap Harian, kolom **Izin/Cuti** di tabel ringkasan Rekap Bulanan dan tabel bulanan Performa, info izin di kartu Dashboard.
+
+**Verifikasi server**: pegawai berizin Andryas (2026-09) -> hadir=15 (cocok dengan hitung langsung baris non-izin=15), izin=1, total bulan hadir=125/izin=1, setahun hadir=150/izin=1 (86,7%); legenda Izin/Sakit/Cuti/Dinas ADA di kedua halaman; QA 10 halaman render OK, 0 gagal.
