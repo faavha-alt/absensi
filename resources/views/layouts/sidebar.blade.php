@@ -2,7 +2,7 @@
     $nav = [
         'Pantau' => [
             ['label' => 'Dashboard', 'route' => 'dashboard', 'icon' => 'dashboard'],
-            ['label' => 'Kehadiran Hari Ini', 'route' => 'kehadiran.index', 'icon' => 'clock', 'soon' => true],
+            ['label' => 'Kehadiran Hari Ini', 'route' => 'kehadiran.index', 'icon' => 'clock'],
             ['label' => 'Perangkat', 'route' => 'perangkat.index', 'icon' => 'device'],
         ],
         'Kepegawaian' => [
@@ -40,7 +40,7 @@
                     <p class="text-[11px] font-medium text-slate-400">Kepegawaian · MIPA UNS</p>
                 </div>
             </div>
-            <button type="button" data-nav-close class="rounded-xl p-1.5 text-lg leading-none text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 lg:hidden" title="Tutup menu">&times;</button>
+            <button type="button" data-nav-close class="rounded-xl p-1.5 text-lg leading-none text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 lg:hidden" title="Tutup menu" aria-label="Tutup menu navigasi">&times;</button>
         </div>
         </div>
 
@@ -66,6 +66,7 @@
                     @foreach ($items as $item)
                         @php $active = request()->routeIs($item['route']); @endphp
                         <a href="{{ route($item['route']) }}"
+                           @if ($active) aria-current="page" @endif
                            @class([
                                'flex items-center justify-between rounded-2xl px-3.5 py-2.5 text-xs font-semibold transition-all',
                                'bg-slate-900 text-white shadow-md shadow-slate-900/10' => $active,
@@ -100,7 +101,7 @@
         </div>
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" title="Keluar" class="rounded-xl p-1.5 text-slate-400 transition hover:bg-slate-100/80 hover:text-slate-700">
+            <button type="submit" title="Keluar" aria-label="Keluar dari akun" class="rounded-xl p-1.5 text-slate-400 transition hover:bg-slate-100/80 hover:text-slate-700">
                 <x-app-icon name="logout" class="h-4 w-4" />
             </button>
         </form>

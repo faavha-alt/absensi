@@ -4,6 +4,7 @@ use App\Http\Controllers\AnalitikController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\KehadiranController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\PerangkatController;
 use App\Http\Controllers\RekapController;
@@ -29,16 +30,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->n
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-    /**
-     * Halaman modul yang belum dibangun (placeholder sesuai roadmap PLAN.md).
-     */
-    $soon = fn (string $title, string $phase, string $description) => view('soon', [
-        'title' => $title,
-        'phase' => $phase,
-        'description' => $description,
-    ]);
-
-    Route::get('/kehadiran', fn () => $soon('Kehadiran Hari Ini', 'Fase 1 · Pantau', 'Papan real-time: sudah masuk, telat, belum absen, dan sudah pulang.'))->name('kehadiran.index');
+    Route::get('/kehadiran', [KehadiranController::class, 'index'])->name('kehadiran.index');
     Route::get('/perangkat', [PerangkatController::class, 'index'])->name('perangkat.index');
 
     Route::get('/pegawai', [EmployeeController::class, 'index'])->name('pegawai.index');
