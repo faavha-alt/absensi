@@ -5,13 +5,7 @@
 @section('subheading', $from->translatedFormat('d M Y').' – '.$to->translatedFormat('d M Y'))
 
 @php
-    $badge = fn (array $s) => match ($s['key']) {
-        'hadir' => 'badge-hadir',
-        'telat' => 'badge-telat',
-        'pulang_cepat' => 'badge-pulang',
-        'libur' => 'badge-libur',
-        default => 'badge-alpa',
-    };
+    $badge = fn (array $s) => $s['class'] ?? 'badge-alpa';
 @endphp
 
 @section('actions')

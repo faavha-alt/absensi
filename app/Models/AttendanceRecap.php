@@ -14,6 +14,7 @@ class AttendanceRecap extends Model
         'check_out',
         'late_minutes',
         'early_leave_minutes',
+        'leave_type',
     ];
 
     protected $casts = [
@@ -39,20 +40,34 @@ class AttendanceRecap extends Model
 
     /**
      * Status kehadiran untuk badge tampilan.
-     * Prioritas: Telat > Pulang Cepat > Hadir.
+     * Prioritas: Izin/Sakit/Cuti/Dinas > Telat > Pulang Cepat > Hadir.
      *
      * @return array{key: string, label: string, class: string}
      */
     public function status(): array
     {
+        if ($this->leave_type) {
+            return match ($this->leave_type) {
+                'sakit' => ['key' => 'sakit', 'label' => 'Sakit', 'class' => 'badge-sakit'],
+                'cuti' => ['key' => 'cuti', 'label' => 'Cuti', 'class' => 'badge-cuti'],
+                'dinas_luar' => ['key' => 'dinas_luar', 'label' => 'Dinas Luar', 'class' => 'badge-dinas'],
+                default => ['key' => 'izin', 'label' => 'Izin', 'class' => 'badge-izin'],
+            };
+        }
+
         if ($this->late_minutes > 0) {
-            return ['key' => 'telat', 'label' => 'Telat', 'class' => 'st-telat'];
+            return ['key' => 'telat', 'label' => 'Telat', 'class' => 'badge-telat'];
         }
 
         if ($this->early_leave_minutes > 0) {
-            return ['key' => 'pulang_cepat', 'label' => 'Pulang Cepat', 'class' => 'st-pulang'];
+            return ['key' => 'pulang_cepat', 'label' => 'Pulang Cepat', 'class' => 'badge-pulang'];
         }
 
-        return ['key' => 'hadir', 'label' => 'Hadir', 'class' => 'st-hadir'];
+        return ['key' => 'hadir', 'label' => 'Hadir', 'class' => 'badge-hadir'];
+    }
+
+    public function isLeave(): bool
+    {
+        return $this->leave_type !== null;
     }
 }

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\AttendanceRecap;
 use App\Models\Employee;
 use App\Models\Holiday;
+use App\Models\Leave;
 use App\Models\WorkSchedule;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -37,6 +38,24 @@ class AttendanceRecapCalculator
             AttendanceRecap::where('employee_id', $employee->id)
                 ->whereDate('date', $date)
                 ->delete();
+
+            return;
+        }
+
+        // Izin/sakit/cuti/dinas luar (dicatat manual admin) -> menang atas scan.
+        $leaveType = Leave::typeForDate($employee->id, $date);
+
+        if ($leaveType) {
+            AttendanceRecap::updateOrCreate(
+                ['employee_id' => $employee->id, 'date' => $date->toDateString()],
+                [
+                    'check_in' => null,
+                    'check_out' => null,
+                    'late_minutes' => 0,
+                    'early_leave_minutes' => 0,
+                    'leave_type' => $leaveType,
+                ]
+            );
 
             return;
         }
@@ -88,6 +107,7 @@ class AttendanceRecapCalculator
                 'check_out' => $checkOut,
                 'late_minutes' => $lateMinutes,
                 'early_leave_minutes' => $earlyLeaveMinutes,
+                'leave_type' => null,
             ]
         );
     }

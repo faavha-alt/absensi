@@ -180,6 +180,10 @@ class AttendancePerformanceService
             'hadir' => ['c' => 'c-hadir', 'label' => 'H'],
             'telat' => ['c' => 'c-telat', 'label' => 'T'],
             'pulang_cepat' => ['c' => 'c-pulang', 'label' => 'P'],
+            'izin' => ['c' => 'c-izin', 'label' => 'I'],
+            'sakit' => ['c' => 'c-sakit', 'label' => 'S'],
+            'cuti' => ['c' => 'c-cuti', 'label' => 'C'],
+            'dinas_luar' => ['c' => 'c-dinas', 'label' => 'D'],
         ];
 
         $days = [];
@@ -262,6 +266,10 @@ class AttendancePerformanceService
             'hadir' => ['c' => 'c-hadir', 'label' => 'H', 'title' => 'Hadir'],
             'telat' => ['c' => 'c-telat', 'label' => 'T', 'title' => 'Telat'],
             'pulang_cepat' => ['c' => 'c-pulang', 'label' => 'P', 'title' => 'Pulang Cepat'],
+            'izin' => ['c' => 'c-izin', 'label' => 'I', 'title' => 'Izin'],
+            'sakit' => ['c' => 'c-sakit', 'label' => 'S', 'title' => 'Sakit'],
+            'cuti' => ['c' => 'c-cuti', 'label' => 'C', 'title' => 'Cuti'],
+            'dinas_luar' => ['c' => 'c-dinas', 'label' => 'D', 'title' => 'Dinas Luar'],
         ];
 
         $today = Carbon::today();

@@ -188,3 +188,25 @@ body {
         backdrop-filter: blur(2px);
     }
 }
+
+/* =========================================================================
+   Izin / Sakit / Cuti / Dinas Luar
+   ========================================================================= */
+.badge-izin { color: #4338ca; background: #eef2ff; border: 1px solid #e0e7ff; }
+.badge-sakit { color: #be185d; background: #fdf2f8; border: 1px solid #fce7f3; }
+.badge-cuti { color: #0369a1; background: #f0f9ff; border: 1px solid #e0f2fe; }
+.badge-dinas { color: #0f766e; background: #f0fdfa; border: 1px solid #ccfbf1; }
+
+.st-cell.c-izin { background: #eef2ff; color: #4338ca; }
+.st-cell.c-sakit { background: #fdf2f8; color: #be185d; }
+.st-cell.c-cuti { background: #f0f9ff; color: #0369a1; }
+.st-cell.c-dinas { background: #f0fdfa; color: #0f766e; }
+
+.cal-cell.c-izin { border-color: #e0e7ff; background: #f5f7ff; }
+.cal-cell.c-izin .cal-dot { background: #4f46e5; }
+.cal-cell.c-sakit { border-color: #fce7f3; background: #fff5f9; }
+.cal-cell.c-sakit .cal-dot { background: #db2777; }
+.cal-cell.c-cuti { border-color: #e0f2fe; background: #f5fbff; }
+.cal-cell.c-cuti .cal-dot { background: #0284c7; }
+.cal-cell.c-dinas { border-color: #ccfbf1; background: #f3fdfb; }
+.cal-cell.c-dinas .cal-dot { background: #0d9488; }

@@ -5,12 +5,7 @@
 @section('subheading', $date->translatedFormat('l, d F Y'))
 
 @php
-    $badge = fn (array $s) => match ($s['key']) {
-        'hadir' => 'badge-hadir',
-        'telat' => 'badge-telat',
-        'pulang_cepat' => 'badge-pulang',
-        default => 'badge-alpa',
-    };
+    $badge = fn (array $s) => $s['class'] ?? 'badge-alpa';
     $chipUrl = fn (?string $s) => route('kehadiran.index', array_filter([
         'tanggal' => $date->toDateString(),
         'departemen' => $dept,

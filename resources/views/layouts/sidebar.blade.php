@@ -7,6 +7,7 @@
         ],
         'Kepegawaian' => [
             ['label' => 'Data Pegawai', 'route' => 'pegawai.index', 'icon' => 'users'],
+            ['label' => 'Izin & Cuti', 'route' => 'izin.index', 'icon' => 'flag'],
         ],
         'Rekap' => [
             ['label' => 'Rekap Harian', 'route' => 'rekap.harian', 'icon' => 'calendar-day'],

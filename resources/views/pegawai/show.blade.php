@@ -5,13 +5,7 @@
 @section('subheading', trim(($employee->position ?: 'Pegawai').' · '.($employee->department ?: 'Tanpa departemen'), ' ·'))
 
 @php
-    $badge = fn (array $s) => match ($s['key']) {
-        'hadir' => 'badge-hadir',
-        'telat' => 'badge-telat',
-        'pulang_cepat' => 'badge-pulang',
-        'libur' => 'badge-libur',
-        default => 'badge-alpa',
-    };
+    $badge = fn (array $s) => $s['class'] ?? 'badge-alpa';
     $todayRecap = $employee->attendanceRecaps()->whereDate('date', now()->toDateString())->first();
     $todayStatus = $employee->is_admin
         ? ['key' => 'admin', 'label' => 'Admin device', 'class' => 'badge-alpa']

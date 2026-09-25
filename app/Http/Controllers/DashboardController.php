@@ -37,7 +37,7 @@ class DashboardController extends Controller
                 'recap' => $recap,
                 'status' => $recap
                     ? $recap->status()
-                    : ['key' => 'belum', 'label' => 'Belum Absen', 'class' => 'st-alpa'],
+                    : ['key' => 'belum', 'label' => 'Belum Absen', 'class' => 'badge-alpa'],
             ];
         });
 

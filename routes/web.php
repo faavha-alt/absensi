@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\KehadiranController;
+use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\PerangkatController;
 use App\Http\Controllers\RekapController;
@@ -40,6 +41,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/pegawai/{employee}/edit', [EmployeeController::class, 'edit'])->name('pegawai.edit');
     Route::put('/pegawai/{employee}', [EmployeeController::class, 'update'])->name('pegawai.update');
     Route::delete('/pegawai/{employee}', [EmployeeController::class, 'destroy'])->name('pegawai.destroy');
+
+    Route::get('/izin', [LeaveController::class, 'index'])->name('izin.index');
+    Route::post('/izin', [LeaveController::class, 'store'])->name('izin.store');
+    Route::put('/izin/{leave}', [LeaveController::class, 'update'])->name('izin.update');
+    Route::delete('/izin/{leave}', [LeaveController::class, 'destroy'])->name('izin.destroy');
 
     Route::get('/rekap-harian', [RekapController::class, 'harian'])->name('rekap.harian');
     Route::get('/rekap-harian/export', [RekapController::class, 'exportHarian'])->name('rekap.harian.export');
