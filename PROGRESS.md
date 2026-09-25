@@ -203,3 +203,15 @@ Detail lengkap di `REVIEW.md`. Prioritas menurun.
 F0 ✅ · F1 ✅ · F2 ✅ · F3 ✅ · F4 ✅ · F5 ✅ · F6 ✅ — **seluruh fase selesai & ter-deploy.**
 
 **Sisa (di luar F0–F6)**: RBAC/peran (SPEC §1) belum diimplementasi — semua akun masih akses penuh; halaman pengaturan device (kirim perintah ADMS/whitelist SN dari UI) masih read-only; `APP_DEBUG=true` di produksi masih terbuka (temuan lama).
+
+### 2026-09-25 (Fitur Izin/Sakit/Cuti/Dinas Luar — input manual admin)
+
+- **Menu baru "Izin & Cuti"** (`/izin`, grup Kepegawaian): admin mencatat manual izin/sakit/cuti/dinas luar per pegawai (rentang tanggal + keterangan + pencatat). Ringkasan 5 kartu, filter tahun/jenis/pegawai, edit, hapus. Tiap perubahan **otomatis recompute** rentang tanggal terkait.
+- **Skema**: tabel `leaves` (employee_id, type, start_date, end_date, note, created_by) + kolom `leave_type` di `attendance_recaps` (migrasi `2026_09_25_120000_...`, sudah dijalankan di produksi).
+- **Integrasi**:
+  - `AttendanceRecapCalculator` — izin **menang atas scan** (hari berizin tidak dihitung telat/pulang cepat), dan `leave_type` direset ke null saat bukan izin lagi.
+  - `AttendanceRecap::status()` — mengembalikan Izin/Sakit/Cuti/Dinas Luar.
+  - Kalender pegawai & matriks bulanan — sel baru (I/S/C/D) berwarna; `calendarForEmployee` & `matrixForMonth` cellMap diperluas.
+  - Badge di dashboard/kehadiran/pegawai/rekap otomatis ikut (closure `$badge` disederhanakan memakai `status()['class']`).
+- **Verifikasi server**: 4 route terdaftar; halaman render 29,7 KB; uji siklus penuh pada pegawai nyata tanggal 2026-09-17 — sebelum "Pulang Cepat" -> saat izin "Izin (leave_type=izin)" -> setelah dihapus kembali "Pulang Cepat"; **0 sisa data uji**.
+- **Catatan**: test suite masih 4 GAGAL (`UserManagementTest` menargetkan komponen Filament `EditUser` yang dihapus) — perlu ditulis ulang ke alur `/pengaturan/akun` + tambah test modul baru.
