@@ -151,3 +151,16 @@ Detail lengkap di `REVIEW.md`. Prioritas menurun.
 - **Verifikasi (di server)**: `php -l` lolos; `login=200`, `/admin=404` (Filament hilang), `/iclock/cdata=200` (alat aman); dashboard render 47 KB via tinker (chart+KPI+tabel ada); `app.css` 57 KB ter-serve.
 - **Handoff / langkah berikutnya (F2 dst. sesuai PLAN.md §7)**: F2 Data Pegawai (daftar+detail, kalender, performa) → F3 Rekap Harian/Bulanan + export → F4 Analitik (Performa & Tahunan — logika service `AttendancePerformanceService` & `MonthlyRecapExcelBuilder` sudah ada, tinggal dibungkus UI) → F5 Pengaturan (Jam Kerja, Libur, Akun, Perangkat) → F6 poles. Catatan: halaman pengaturan perlu tulis-endpoint (recompute otomatis) yang dulu ada di Filament.
 - **Jebakan baru**: `<x-icon>` bentrok dengan blade-icons (Filament) → fatal "Svg by name ... not found"; gunakan nama unik (`x-app-icon`).
+
+### 2026-09-25 (F2 — Data Pegawai SELESAI)
+
+- **Spesifikasi matang** ditulis di **`SPEC.md`** (menu final, RBAC, 12 layar, design system, definisi metrik, non-fungsional, kriteria terima per fase). `PLAN.md` menunjuk ke sana.
+- **Fix navigasi responsif**: sidebar sebelumnya `hidden lg:flex` (menu HILANG total di layar <1024px, tanpa hamburger). Kini `app-sidebar` = drawer off-canvas + tombol ☰ di header + backdrop + tutup (Esc/klik). `resources/js/app.js` menangani toggle + pintasan `/`.
+- **F2 Data Pegawai** (`EmployeeController` + 3 view):
+  - `/pegawai` — daftar + cari (nama/NIP/PIN) + filter departemen/status + status kehadiran hari ini (badge) + paginasi 20.
+  - `/pegawai/{id}` — profil, 4 KPI pribadi (kehadiran, telat, pulang cepat, %tepat; tahun dapat diganti), **kalender kehadiran bulanan** (navigasi ‹ ›), grafik tren bulanan (Chart.js), riwayat scan terakhir.
+  - CRUD: create/store/edit/update/destroy (validasi unik NIP & PIN; hapus = konfirmasi).
+  - `AttendancePerformanceService::calendarForEmployee()` ditambahkan (dipakai halaman detail).
+  - Slot `@yield('actions')` ditambahkan di header untuk aksi cepat per halaman.
+- **Verifikasi di server**: `php -l` lolos; 7 route pegawai terdaftar; render index 44 KB, show 46 KB (kalender + chart ada), form create/edit 24 KB; guest → 302 ke login.
+- **Handoff berikutnya**: **F3 Rekap Harian + Bulanan + export** (logika `MonthlyRecapExcelBuilder` & exporter sudah ada) → F4 Analitik → F5 Pengaturan (butuh endpoint tulis + recompute) → F6 poles. Catatan: `Role/peran` (SPEC §1) belum diimplementasi — masih semua user akses penuh.
