@@ -11,6 +11,8 @@
 </head>
 <body class="h-full flex overflow-hidden bg-[#F4F4F6] text-slate-900 selection:bg-indigo-100 selection:text-indigo-900">
 
+    <div class="nav-backdrop" data-nav-close></div>
+
     @include('layouts.sidebar')
 
     <div class="flex min-w-0 flex-1 flex-col overflow-hidden py-0 pr-0 lg:py-5 lg:pr-5">

@@ -24,20 +24,24 @@
     ];
 @endphp
 
-<aside class="hidden w-64 shrink-0 select-none flex-col justify-between p-5 lg:flex">
+<aside class="app-sidebar flex w-64 shrink-0 select-none flex-col justify-between p-5">
     <div class="space-y-6">
         {{-- Brand --}}
-        <div class="flex items-center gap-3 px-2">
-            <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr from-slate-900 via-slate-800 to-indigo-950 text-white shadow-md shadow-slate-900/15">
-                <x-app-icon name="fingerprint" class="h-5 w-5 text-indigo-400" />
-            </div>
-            <div>
-                <div class="flex items-center gap-1.5">
-                    <span class="text-sm font-extrabold tracking-tight text-slate-900">Absensi</span>
-                    <span class="rounded border border-indigo-100/80 bg-indigo-50 px-1.5 py-0.5 text-[9px] font-extrabold uppercase text-indigo-600">Pro</span>
+        <div class="flex items-center justify-between gap-3 px-2">
+            <div class="flex items-center gap-3">
+                <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr from-slate-900 via-slate-800 to-indigo-950 text-white shadow-md shadow-slate-900/15">
+                    <x-app-icon name="fingerprint" class="h-5 w-5 text-indigo-400" />
                 </div>
-                <p class="text-[11px] font-medium text-slate-400">Kepegawaian · MIPA UNS</p>
+                <div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-sm font-extrabold tracking-tight text-slate-900">Absensi</span>
+                        <span class="rounded border border-indigo-100/80 bg-indigo-50 px-1.5 py-0.5 text-[9px] font-extrabold uppercase text-indigo-600">Pro</span>
+                    </div>
+                    <p class="text-[11px] font-medium text-slate-400">Kepegawaian · MIPA UNS</p>
+                </div>
             </div>
+            <button type="button" data-nav-close class="rounded-xl p-1.5 text-lg leading-none text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 lg:hidden" title="Tutup menu">&times;</button>
+        </div>
         </div>
 
         {{-- Status device --}}

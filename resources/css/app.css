@@ -123,3 +123,40 @@ body {
 .cal-cell.c-null .cal-num { color: #cbd5e1; }
 .cal-cell.c-null .cal-dot { background: transparent; }
 .cal-cell.cal-today { outline: 2px solid #4f46e5; outline-offset: 1px; }
+
+/* =========================================================================
+   Sidebar responsif — drawer (off-canvas) di layar < 1024px
+   ========================================================================= */
+@media (max-width: 1023px) {
+    .app-sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 60;
+        overflow-y: auto;
+        background: #f4f4f6;
+        transform: translateX(-100%);
+        transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 0 40px rgba(15, 23, 42, 0.12);
+    }
+
+    body.nav-open .app-sidebar {
+        transform: translateX(0);
+    }
+}
+
+.nav-backdrop {
+    display: none;
+}
+
+@media (max-width: 1023px) {
+    body.nav-open .nav-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        background: rgba(15, 23, 42, 0.35);
+        backdrop-filter: blur(2px);
+    }
+}
