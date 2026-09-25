@@ -56,11 +56,12 @@
     </form>
 
     {{-- Chip ringkas (klik untuk filter) --}}
-    <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+    <div class="grid grid-cols-2 gap-4 lg:grid-cols-5">
         @foreach ([
             ['Hadir', 'hadir', $counts['hadir'], 'badge-hadir'],
             ['Telat', 'telat', $counts['telat'], 'badge-telat'],
             ['Pulang Cepat', 'pulang', $counts['pulang'], 'badge-pulang'],
+            ['Izin/Cuti', 'izin', $counts['izin'], 'badge-izin'],
             ['Belum Absen', 'belum', $counts['belum'], 'badge-alpa'],
         ] as [$label, $key, $value, $cls])
             <a href="{{ $chipUrl($status === $key ? null : $key) }}"

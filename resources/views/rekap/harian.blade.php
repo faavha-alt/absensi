@@ -43,6 +43,7 @@
                 <option value="">Semua</option>
                 <option value="telat" @selected($filters['status'] === 'telat')>Hanya telat</option>
                 <option value="pulang" @selected($filters['status'] === 'pulang')>Hanya pulang cepat</option>
+                <option value="izin" @selected($filters['status'] === 'izin')>Hanya izin/cuti</option>
             </select>
         </div>
         <div class="flex items-center gap-2">
@@ -52,9 +53,10 @@
     </form>
 
     {{-- Ringkasan --}}
-    <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+    <div class="grid grid-cols-2 gap-4 lg:grid-cols-5">
         @foreach ([
             ['Total Kehadiran', $summary['hadir'], 'text-slate-900'],
+            ['Total Izin/Cuti', $summary['izin'], 'text-sky-600'],
             ['Total Kali Telat', $summary['telat'], 'text-rose-600'],
             ['Total Pulang Cepat', $summary['pulang'], 'text-amber-600'],
             ['Total Menit Telat', $summary['menit_telat'], 'text-indigo-600'],

@@ -56,7 +56,7 @@
             </div>
             <div class="mt-3">
                 <p class="font-mono-num text-3xl font-extrabold tracking-tight text-slate-900">{{ $stats['belum'] }}</p>
-                <p class="mt-1 text-[11px] font-medium text-slate-400">pegawai belum scan masuk</p>
+                <p class="mt-1 text-[11px] font-medium text-slate-400">{{ $stats['izin'] }} izin/cuti · belum scan</p>
             </div>
         </div>
     </div>

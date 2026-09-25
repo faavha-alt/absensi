@@ -86,6 +86,10 @@
                 <span class="badge-status badge-hadir"><span class="dot"></span>Hadir</span>
                 <span class="badge-status badge-telat"><span class="dot"></span>Telat</span>
                 <span class="badge-status badge-pulang"><span class="dot"></span>Pulang Cepat</span>
+                <span class="badge-status badge-izin"><span class="dot"></span>Izin</span>
+                <span class="badge-status badge-sakit"><span class="dot"></span>Sakit</span>
+                <span class="badge-status badge-cuti"><span class="dot"></span>Cuti</span>
+                <span class="badge-status badge-dinas"><span class="dot"></span>Dinas Luar</span>
                 <span class="badge-status badge-alpa"><span class="dot"></span>Alpa</span>
                 <span class="badge-status badge-libur"><span class="dot"></span>Libur</span>
             </div>

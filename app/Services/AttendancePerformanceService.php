@@ -29,6 +29,13 @@ class AttendancePerformanceService
 
         foreach ($rows as $r) {
             $m = (int) $r->date->format('n');
+
+            if ($r->leave_type !== null) {
+                $months[$m]['izin']++;
+
+                continue;
+            }
+
             $months[$m]['hadir']++;
             if ($r->late_minutes > 0) {
                 $months[$m]['telat']++;
@@ -57,7 +64,7 @@ class AttendancePerformanceService
             ->join('employees', 'employees.id', '=', 'attendance_recaps.employee_id')
             ->where('employees.is_admin', false)
             ->whereYear('attendance_recaps.date', $year)
-            ->selectRaw('MONTH(attendance_recaps.date) as m, COUNT(*) as hadir, SUM(attendance_recaps.late_minutes > 0) as telat, SUM(attendance_recaps.early_leave_minutes > 0) as pulang, SUM(attendance_recaps.late_minutes) as menit_telat')
+            ->selectRaw('MONTH(attendance_recaps.date) as m, SUM(CASE WHEN attendance_recaps.leave_type IS NULL THEN 1 ELSE 0 END) as hadir, SUM(CASE WHEN attendance_recaps.leave_type IS NOT NULL THEN 1 ELSE 0 END) as izin, SUM(attendance_recaps.late_minutes > 0) as telat, SUM(attendance_recaps.early_leave_minutes > 0) as pulang, SUM(attendance_recaps.late_minutes) as menit_telat')
             ->groupBy('m')
             ->get()
             ->keyBy('m');
@@ -68,6 +75,7 @@ class AttendancePerformanceService
             $r = $rows->get($m);
             $months[$m] = [
                 'hadir' => (int) ($r->hadir ?? 0),
+                'izin' => (int) ($r->izin ?? 0),
                 'telat' => (int) ($r->telat ?? 0),
                 'pulang' => (int) ($r->pulang ?? 0),
                 'menit_telat' => (int) ($r->menit_telat ?? 0),
@@ -83,7 +91,7 @@ class AttendancePerformanceService
     public function yearlyByEmployee(int $year): Collection
     {
         return AttendanceRecap::query()
-            ->selectRaw('employee_id, COUNT(*) as hadir, SUM(late_minutes > 0) as telat, SUM(early_leave_minutes > 0) as pulang, SUM(late_minutes) as menit_telat')
+            ->selectRaw('employee_id, SUM(CASE WHEN leave_type IS NULL THEN 1 ELSE 0 END) as hadir, SUM(CASE WHEN leave_type IS NOT NULL THEN 1 ELSE 0 END) as izin, SUM(late_minutes > 0) as telat, SUM(early_leave_minutes > 0) as pulang, SUM(late_minutes) as menit_telat')
             ->whereYear('date', $year)
             ->groupBy('employee_id')
             ->with('employee')
@@ -114,7 +122,7 @@ class AttendancePerformanceService
         $months = [];
 
         for ($m = 1; $m <= 12; $m++) {
-            $months[$m] = ['hadir' => 0, 'telat' => 0, 'pulang' => 0, 'menit_telat' => 0, 'hari_kerja' => 0];
+            $months[$m] = ['hadir' => 0, 'telat' => 0, 'pulang' => 0, 'menit_telat' => 0, 'izin' => 0, 'hari_kerja' => 0];
         }
 
         return $months;
@@ -225,7 +233,7 @@ class AttendancePerformanceService
     public function monthlyByEmployee(int $year, int $month): Collection
     {
         return AttendanceRecap::query()
-            ->selectRaw('employee_id, COUNT(*) as hadir, SUM(late_minutes > 0) as telat, SUM(late_minutes) as menit_telat, SUM(early_leave_minutes > 0) as pulang')
+            ->selectRaw('employee_id, SUM(CASE WHEN leave_type IS NULL THEN 1 ELSE 0 END) as hadir, SUM(CASE WHEN leave_type IS NOT NULL THEN 1 ELSE 0 END) as izin, SUM(late_minutes > 0) as telat, SUM(late_minutes) as menit_telat, SUM(early_leave_minutes > 0) as pulang')
             ->whereYear('date', $year)
             ->whereMonth('date', $month)
             ->groupBy('employee_id')
@@ -306,6 +314,7 @@ class AttendancePerformanceService
     public function summarize(array $monthly): array
     {
         $hadir = array_sum(array_column($monthly, 'hadir'));
+        $izin = array_sum(array_column($monthly, 'izin'));
         $telat = array_sum(array_column($monthly, 'telat'));
         $pulang = array_sum(array_column($monthly, 'pulang'));
         $menit = array_sum(array_column($monthly, 'menit_telat'));
@@ -313,6 +322,7 @@ class AttendancePerformanceService
 
         return [
             'hadir' => $hadir,
+            'izin' => $izin,
             'telat' => $telat,
             'pulang' => $pulang,
             'menit_telat' => $menit,

@@ -24,9 +24,11 @@ class DashboardController extends Controller
             ->get()
             ->keyBy('employee_id');
 
-        $hadir = $recapsToday->count();
-        $telat = $recapsToday->where('late_minutes', '>', 0)->count();
-        $pulang = $recapsToday->where('early_leave_minutes', '>', 0)->count();
+        $absen = $recapsToday->filter(fn (AttendanceRecap $r) => $r->leave_type === null);
+        $hadir = $absen->count();
+        $telat = $absen->where('late_minutes', '>', 0)->count();
+        $pulang = $absen->where('early_leave_minutes', '>', 0)->count();
+        $izin = $recapsToday->filter(fn (AttendanceRecap $r) => $r->leave_type !== null)->count();
 
         // Kehadiran hari ini (per pegawai)
         $todayRows = $employees->map(function (Employee $e) use ($recapsToday) {
@@ -44,7 +46,7 @@ class DashboardController extends Controller
         // Tren harian
         $from = $today->copy()->subDays($days - 1);
         $byDate = AttendanceRecap::query()
-            ->selectRaw('date, COUNT(*) as hadir, SUM(late_minutes > 0) as telat')
+            ->selectRaw('date, SUM(CASE WHEN leave_type IS NULL THEN 1 ELSE 0 END) as hadir, SUM(CASE WHEN leave_type IS NOT NULL THEN 1 ELSE 0 END) as izin, SUM(late_minutes > 0) as telat')
             ->whereBetween('date', [$from->toDateString(), $today->toDateString()])
             ->groupBy('date')
             ->get()
@@ -76,9 +78,10 @@ class DashboardController extends Controller
             'stats' => [
                 'pegawai' => $employees->count(),
                 'hadir' => $hadir,
+                'izin' => $izin,
                 'telat' => $telat,
                 'pulang' => $pulang,
-                'belum' => max(0, $employees->count() - $hadir),
+                'belum' => max(0, $employees->count() - $hadir - $izin),
                 'device_online' => Device::where('status', 'online')->count(),
                 'device_total' => Device::count(),
             ],

@@ -134,6 +134,7 @@ class RekapController extends Controller
             ->when($request->filled('pegawai'), fn (Builder $q) => $q->where('employee_id', $request->integer('pegawai')))
             ->when($request->query('status') === 'telat', fn (Builder $q) => $q->where('late_minutes', '>', 0))
             ->when($request->query('status') === 'pulang', fn (Builder $q) => $q->where('early_leave_minutes', '>', 0))
+            ->when($request->query('status') === 'izin', fn (Builder $q) => $q->whereNotNull('leave_type'))
             ->orderByDesc('date')
             ->orderBy('employee_id');
     }
@@ -145,11 +146,12 @@ class RekapController extends Controller
     {
         $agg = $this->dailyQuery($request, $from, $to)
             ->reorder()
-            ->selectRaw('COUNT(*) as hadir, SUM(late_minutes > 0) as telat, SUM(early_leave_minutes > 0) as pulang, SUM(late_minutes) as menit_telat')
+            ->selectRaw('SUM(CASE WHEN leave_type IS NULL THEN 1 ELSE 0 END) as hadir, SUM(CASE WHEN leave_type IS NOT NULL THEN 1 ELSE 0 END) as izin, SUM(late_minutes > 0) as telat, SUM(early_leave_minutes > 0) as pulang, SUM(late_minutes) as menit_telat')
             ->first();
 
         return [
             'hadir' => (int) ($agg->hadir ?? 0),
+            'izin' => (int) ($agg->izin ?? 0),
             'telat' => (int) ($agg->telat ?? 0),
             'pulang' => (int) ($agg->pulang ?? 0),
             'menit_telat' => (int) ($agg->menit_telat ?? 0),

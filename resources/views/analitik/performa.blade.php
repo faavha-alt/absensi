@@ -88,6 +88,7 @@
                     <tr class="border-b border-slate-100 text-[10px] font-bold uppercase tracking-wider text-slate-400">
                         <th class="px-6 py-3">Bulan</th>
                         <th class="px-6 py-3 text-center">Hadir</th>
+                        <th class="px-6 py-3 text-center">Izin/Cuti</th>
                         <th class="px-6 py-3 text-center">Telat</th>
                         <th class="px-6 py-3 text-center">Menit Telat</th>
                         <th class="px-6 py-3 text-center">Pulang Cepat</th>
@@ -101,6 +102,7 @@
                         <tr class="transition hover:bg-slate-50/70">
                             <td class="px-6 py-3 font-semibold text-slate-700">{{ $monthLabels[$m - 1] }}</td>
                             <td class="px-6 py-3 text-center font-mono-num">{{ $d['hadir'] }}</td>
+                            <td class="px-6 py-3 text-center font-mono-num text-sky-600">{{ $d['izin'] }}</td>
                             <td class="px-6 py-3 text-center font-mono-num {{ $d['telat'] > 0 ? 'font-bold text-rose-600' : 'text-slate-400' }}">{{ $d['telat'] }}</td>
                             <td class="px-6 py-3 text-center font-mono-num">{{ $d['menit_telat'] }}</td>
                             <td class="px-6 py-3 text-center font-mono-num {{ $d['pulang'] > 0 ? 'text-amber-600' : 'text-slate-400' }}">{{ $d['pulang'] }}</td>
@@ -113,6 +115,7 @@
                     <tr class="border-t border-slate-100 bg-slate-50/60 text-[11px] font-bold text-slate-800">
                         <td class="px-6 py-3">TOTAL</td>
                         <td class="px-6 py-3 text-center font-mono-num">{{ $summary['hadir'] }}</td>
+                        <td class="px-6 py-3 text-center font-mono-num">{{ $summary['izin'] }}</td>
                         <td class="px-6 py-3 text-center font-mono-num">{{ $summary['telat'] }}</td>
                         <td class="px-6 py-3 text-center font-mono-num">{{ $summary['menit_telat'] }}</td>
                         <td class="px-6 py-3 text-center font-mono-num">{{ $summary['pulang'] }}</td>

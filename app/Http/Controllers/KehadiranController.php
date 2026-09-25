@@ -45,15 +45,17 @@ class KehadiranController extends Controller
             'hadir' => $rows->filter(fn ($r) => $r['status']['key'] === 'hadir')->count(),
             'telat' => $rows->filter(fn ($r) => $r['status']['key'] === 'telat')->count(),
             'pulang' => $rows->filter(fn ($r) => $r['status']['key'] === 'pulang_cepat')->count(),
+            'izin' => $rows->filter(fn ($r) => in_array($r['status']['key'], ['izin', 'sakit', 'cuti', 'dinas_luar'], true))->count(),
             'belum' => $rows->filter(fn ($r) => $r['status']['key'] === 'belum')->count(),
         ];
 
         if ($status) {
             $rows = $rows->filter(function ($r) use ($status) {
                 return match ($status) {
-                    'hadir' => in_array($r['status']['key'], ['hadir'], true),
+                    'hadir' => $r['status']['key'] === 'hadir',
                     'telat' => $r['status']['key'] === 'telat',
                     'pulang' => $r['status']['key'] === 'pulang_cepat',
+                    'izin' => in_array($r['status']['key'], ['izin', 'sakit', 'cuti', 'dinas_luar'], true),
                     'belum' => $r['status']['key'] === 'belum',
                     default => true,
                 };

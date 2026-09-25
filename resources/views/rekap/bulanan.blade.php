@@ -66,6 +66,10 @@
                 <span class="badge-status badge-hadir">H · Hadir</span>
                 <span class="badge-status badge-telat">T · Telat</span>
                 <span class="badge-status badge-pulang">P · Pulang Cepat</span>
+                <span class="badge-status badge-izin">I · Izin</span>
+                <span class="badge-status badge-sakit">S · Sakit</span>
+                <span class="badge-status badge-cuti">C · Cuti</span>
+                <span class="badge-status badge-dinas">D · Dinas Luar</span>
                 <span class="badge-status badge-alpa">A · Alpa</span>
                 <span class="badge-status badge-libur">L · Libur</span>
             </div>
@@ -116,6 +120,7 @@
                         <th class="px-6 py-3">#</th>
                         <th class="px-6 py-3">Pegawai</th>
                         <th class="px-6 py-3 text-center">Hadir</th>
+                        <th class="px-6 py-3 text-center">Izin/Cuti</th>
                         <th class="px-6 py-3 text-center">Telat</th>
                         <th class="px-6 py-3 text-center">Menit Telat</th>
                         <th class="px-6 py-3 text-center">Pulang Cepat</th>
@@ -134,13 +139,14 @@
                                 <a href="{{ route('pegawai.show', $row->employee_id) }}" class="font-semibold text-slate-800 hover:text-indigo-600">{{ $row->employee?->name ?? '-' }}</a>
                             </td>
                             <td class="px-6 py-3 text-center font-mono-num">{{ $hadir }}</td>
+                            <td class="px-6 py-3 text-center"><span class="badge-status {{ (int) $row->izin > 0 ? 'badge-izin' : 'badge-alpa' }}">{{ (int) $row->izin }}</span></td>
                             <td class="px-6 py-3 text-center"><span class="badge-status {{ (int) $row->telat > 0 ? 'badge-telat' : 'badge-hadir' }}">{{ (int) $row->telat }}x</span></td>
                             <td class="px-6 py-3 text-center font-mono-num">{{ (int) $row->menit_telat }}</td>
                             <td class="px-6 py-3 text-center"><span class="badge-status {{ (int) $row->pulang > 0 ? 'badge-pulang' : 'badge-hadir' }}">{{ (int) $row->pulang }}x</span></td>
                             <td class="px-6 py-3 text-center font-mono-num font-bold text-slate-800">{{ $tepat }}%</td>
                         </tr>
                     @empty
-                        <tr><td colspan="7" class="px-6 py-14 text-center text-xs font-medium text-slate-400">Belum ada data untuk bulan ini.</td></tr>
+                        <tr><td colspan="8" class="px-6 py-14 text-center text-xs font-medium text-slate-400">Belum ada data untuk bulan ini.</td></tr>
                     @endforelse
                 </tbody>
             </table>
