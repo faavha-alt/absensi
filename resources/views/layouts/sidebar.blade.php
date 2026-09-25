@@ -3,7 +3,7 @@
         'Pantau' => [
             ['label' => 'Dashboard', 'route' => 'dashboard', 'icon' => 'dashboard'],
             ['label' => 'Kehadiran Hari Ini', 'route' => 'kehadiran.index', 'icon' => 'clock', 'soon' => true],
-            ['label' => 'Perangkat', 'route' => 'perangkat.index', 'icon' => 'device', 'soon' => true],
+            ['label' => 'Perangkat', 'route' => 'perangkat.index', 'icon' => 'device'],
         ],
         'Kepegawaian' => [
             ['label' => 'Data Pegawai', 'route' => 'pegawai.index', 'icon' => 'users'],
@@ -17,9 +17,9 @@
             ['label' => 'Performa Pegawai', 'route' => 'performa.index', 'icon' => 'trending'],
         ],
         'Pengaturan' => [
-            ['label' => 'Jam Kerja', 'route' => 'pengaturan.jam-kerja', 'icon' => 'cog', 'soon' => true],
-            ['label' => 'Hari Libur', 'route' => 'pengaturan.libur', 'icon' => 'flag', 'soon' => true],
-            ['label' => 'Akun & Keamanan', 'route' => 'pengaturan.akun', 'icon' => 'shield', 'soon' => true],
+            ['label' => 'Jam Kerja', 'route' => 'pengaturan.jam-kerja', 'icon' => 'cog'],
+            ['label' => 'Hari Libur', 'route' => 'pengaturan.libur', 'icon' => 'flag'],
+            ['label' => 'Akun & Keamanan', 'route' => 'pengaturan.akun', 'icon' => 'shield'],
         ],
     ];
 @endphp
