@@ -190,3 +190,16 @@ Detail lengkap di `REVIEW.md`. Prioritas menurun.
 - **Perangkat** (`/perangkat`): KPI (online/total, scan hari ini, total scan, scan terakhir), kartu per device (SN, model, IP, firmware, push ver., aktivitas terakhir, badge online/offline), tabel log scan mentah 30 terakhir dengan nama pegawai.
 - **Verifikasi server**: 10 route baru terdaftar; render jam-kerja 22,9 KB, libur 54,2 KB (25 hari libur), akun 26,5 KB, perangkat 40,7 KB; `recomputeAll()` 1.591 hari-pegawai.
 - **Sisa**: halaman **"Kehadiran Hari Ini"** (`/kehadiran`) masih placeholder `soon` (fungsi intinya sudah ada di tabel dashboard). Lalu **F6 poles**: responsif, aksesibilitas, keyboard, skeleton loading, audit kontras. RBAC/peran (SPEC §1) belum diimplementasi.
+
+### 2026-09-25 (F6 — Poles + Kehadiran Hari Ini SELESAI — roadmap PLAN.md TUNTAS)
+
+- **Kehadiran Hari Ini** (`/kehadiran`): papan harian dengan filter tanggal/departemen/status, **chip ringkas yang bisa diklik** (Hadir/Telat/Pulang Cepat/Belum = filter), banner otomatis bila hari libur atau akhir pekan, tabel (pegawai, jabatan, masuk, pulang, **durasi**, status), tombol ke Rekap Harian, dan **auto-refresh 60s** (preferensi disimpan di localStorage).
+- **Poles aksesibilitas**: `aria-label` pada tombol ikon (menu, notifikasi, tutup, keluar), `aria-current="page"` pada menu aktif, `aria-hidden` pada ikon dekoratif.
+- **404 kustom** bergaya AeroDeck (`resources/views/errors/404.blade.php`).
+- `soon.blade.php` + closure `$soon` dihapus — **semua 11 menu sekarang halaman nyata** (tidak ada placeholder).
+- **QA akhir (server)**: 14 render halaman (dashboard, kehadiran+filter, pegawai list/detail/form, rekap harian/bulanan/tahunan, performa, jam-kerja, libur, akun, perangkat) — **0 gagal**; `/login=200`, `/admin=404`, `/iclock/cdata=200` (alat tetap jalan).
+
+### Status roadmap PLAN.md
+F0 ✅ · F1 ✅ · F2 ✅ · F3 ✅ · F4 ✅ · F5 ✅ · F6 ✅ — **seluruh fase selesai & ter-deploy.**
+
+**Sisa (di luar F0–F6)**: RBAC/peran (SPEC §1) belum diimplementasi — semua akun masih akses penuh; halaman pengaturan device (kirim perintah ADMS/whitelist SN dari UI) masih read-only; `APP_DEBUG=true` di produksi masih terbuka (temuan lama).
