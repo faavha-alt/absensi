@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\RekapController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -45,8 +46,10 @@ Route::middleware('auth')->group(function () {
     Route::put('/pegawai/{employee}', [EmployeeController::class, 'update'])->name('pegawai.update');
     Route::delete('/pegawai/{employee}', [EmployeeController::class, 'destroy'])->name('pegawai.destroy');
 
-    Route::get('/rekap-harian', fn () => $soon('Rekap Harian', 'Fase 3 · Rekap', 'Rekap kehadiran per hari dengan filter pegawai/status dan export Excel.'))->name('rekap.harian');
-    Route::get('/rekap-bulanan', fn () => $soon('Rekap Bulanan', 'Fase 3 · Rekap', 'Matriks pegawai × tanggal (H/T/P/A/L) beserta ringkasan dan export.'))->name('rekap.bulanan');
+    Route::get('/rekap-harian', [RekapController::class, 'harian'])->name('rekap.harian');
+    Route::get('/rekap-harian/export', [RekapController::class, 'exportHarian'])->name('rekap.harian.export');
+    Route::get('/rekap-bulanan', [RekapController::class, 'bulanan'])->name('rekap.bulanan');
+    Route::get('/rekap-bulanan/export', [RekapController::class, 'exportBulanan'])->name('rekap.bulanan.export');
     Route::get('/rekap-tahunan', fn () => $soon('Rekap Tahunan', 'Fase 4 · Rekap', 'Agregat 12 bulan dan peringkat ketepatan pegawai.'))->name('rekap.tahunan');
 
     Route::get('/performa', fn () => $soon('Performa Pegawai', 'Fase 4 · Analitik', 'Grafik bulanan per pegawai: kehadiran, keterlambatan, dan pulang cepat.'))->name('performa.index');

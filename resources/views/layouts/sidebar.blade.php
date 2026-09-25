@@ -9,8 +9,8 @@
             ['label' => 'Data Pegawai', 'route' => 'pegawai.index', 'icon' => 'users'],
         ],
         'Rekap' => [
-            ['label' => 'Rekap Harian', 'route' => 'rekap.harian', 'icon' => 'calendar-day', 'soon' => true],
-            ['label' => 'Rekap Bulanan', 'route' => 'rekap.bulanan', 'icon' => 'calendar', 'soon' => true],
+            ['label' => 'Rekap Harian', 'route' => 'rekap.harian', 'icon' => 'calendar-day'],
+            ['label' => 'Rekap Bulanan', 'route' => 'rekap.bulanan', 'icon' => 'calendar'],
             ['label' => 'Rekap Tahunan', 'route' => 'rekap.tahunan', 'icon' => 'chart', 'soon' => true],
         ],
         'Analitik' => [

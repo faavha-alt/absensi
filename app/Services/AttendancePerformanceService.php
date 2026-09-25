@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\AttendanceRecap;
+use App\Models\Employee;
 use App\Models\Holiday;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -212,5 +213,79 @@ class AttendancePerformanceService
         }
 
         return $days;
+    }
+
+    /**
+     * Agregat 1 bulan per pegawai (untuk tabel ringkasan Rekap Bulanan).
+     */
+    public function monthlyByEmployee(int $year, int $month): Collection
+    {
+        return AttendanceRecap::query()
+            ->selectRaw('employee_id, COUNT(*) as hadir, SUM(late_minutes > 0) as telat, SUM(late_minutes) as menit_telat, SUM(early_leave_minutes > 0) as pulang')
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->groupBy('employee_id')
+            ->with('employee')
+            ->get()
+            ->sortBy([['telat', 'asc'], ['menit_telat', 'asc']])
+            ->values();
+    }
+
+    /**
+     * Matriks pegawai × tanggal (hari kerja) untuk 1 bulan.
+     *
+     * @return array{employees: Collection, days: array<int, Carbon>, cells: array<string, array{c:string,label:string,title:string}>}
+     */
+    public function matrixForMonth(Carbon $month): array
+    {
+        $days = [];
+        for ($d = 1; $d <= $month->daysInMonth; $d++) {
+            $date = Carbon::create($month->year, $month->month, $d);
+            if (! $date->isWeekend()) {
+                $days[] = $date;
+            }
+        }
+
+        $recaps = AttendanceRecap::whereYear('date', $month->year)
+            ->whereMonth('date', $month->month)
+            ->get()
+            ->keyBy(fn (AttendanceRecap $r) => $r->employee_id.'|'.$r->date->toDateString());
+
+        $holidays = Holiday::whereYear('date', $month->year)
+            ->whereMonth('date', $month->month)
+            ->get()
+            ->keyBy(fn (Holiday $h) => $h->date->toDateString());
+
+        $employees = Employee::where('is_admin', false)->orderBy('name')->get();
+
+        $cellMap = [
+            'hadir' => ['c' => 'c-hadir', 'label' => 'H', 'title' => 'Hadir'],
+            'telat' => ['c' => 'c-telat', 'label' => 'T', 'title' => 'Telat'],
+            'pulang_cepat' => ['c' => 'c-pulang', 'label' => 'P', 'title' => 'Pulang Cepat'],
+        ];
+
+        $today = Carbon::today();
+        $cells = [];
+
+        foreach ($employees as $employee) {
+            foreach ($days as $date) {
+                $key = $employee->id.'|'.$date->toDateString();
+                $recap = $recaps->get($key);
+                $holiday = $holidays->get($date->toDateString());
+
+                if ($holiday) {
+                    $cells[$key] = ['c' => 'c-libur', 'label' => 'L', 'title' => 'Libur: '.$holiday->name];
+                } elseif ($date->gt($today)) {
+                    $cells[$key] = ['c' => 'c-null', 'label' => '·', 'title' => ''];
+                } elseif (! $recap) {
+                    $cells[$key] = ['c' => 'c-alpa', 'label' => 'A', 'title' => 'Alpa'];
+                } else {
+                    $st = $recap->status();
+                    $cells[$key] = $cellMap[$st['key']] ?? ['c' => 'c-hadir', 'label' => 'H', 'title' => 'Hadir'];
+                }
+            }
+        }
+
+        return compact('employees', 'days', 'cells');
     }
 }

@@ -124,6 +124,34 @@ body {
 .cal-cell.c-null .cal-dot { background: transparent; }
 .cal-cell.cal-today { outline: 2px solid #4f46e5; outline-offset: 1px; }
 
+/* Matriks rekap bulanan */
+.st-cell {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+}
+
+.st-cell.c-hadir { background: #ecfdf5; color: #059669; }
+.st-cell.c-telat { background: #fff1f2; color: #e11d48; }
+.st-cell.c-pulang { background: #fffbeb; color: #d97706; }
+.st-cell.c-alpa { background: #f8fafc; color: #94a3b8; }
+.st-cell.c-libur { background: #eef2ff; color: #6366f1; }
+.st-cell.c-weekend { background: transparent; color: #cbd5e1; }
+.st-cell.c-null { background: transparent; color: #cbd5e1; }
+
+.st-date {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 0.625rem;
+    font-weight: 600;
+    color: #94a3b8;
+}
+
 /* =========================================================================
    Sidebar responsif — drawer (off-canvas) di layar < 1024px
    ========================================================================= */
