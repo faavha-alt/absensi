@@ -164,3 +164,12 @@ Detail lengkap di `REVIEW.md`. Prioritas menurun.
   - Slot `@yield('actions')` ditambahkan di header untuk aksi cepat per halaman.
 - **Verifikasi di server**: `php -l` lolos; 7 route pegawai terdaftar; render index 44 KB, show 46 KB (kalender + chart ada), form create/edit 24 KB; guest → 302 ke login.
 - **Handoff berikutnya**: **F3 Rekap Harian + Bulanan + export** (logika `MonthlyRecapExcelBuilder` & exporter sudah ada) → F4 Analitik → F5 Pengaturan (butuh endpoint tulis + recompute) → F6 poles. Catatan: `Role/peran` (SPEC §1) belum diimplementasi — masih semua user akses penuh.
+
+### 2026-09-25 (F3 — Rekap Harian + Bulanan + Export SELESAI)
+
+- **Rekap Harian** (`/rekap-harian`): filter rentang tanggal + pegawai + status (semua/telat/pulang cepat), KPI ringkas, tabel (tanggal, pegawai, masuk, pulang, telat, pulang cepat, status), paginasi 30, filter tersimpan di URL.
+- **Rekap Bulanan** (`/rekap-bulanan`): filter bulan/tahun + navigasi bulan lalu/berikutnya, KPI bulan, **matriks pegawai x tanggal** (H/T/P/A/L, kolom pegawai sticky), tabel ringkasan per pegawai + ketepatan %.
+- **Export Excel** (asli .xlsx via OpenSpout): `DailyRecapExcelBuilder` (baru) + `MonthlyRecapExcelBuilder` (dipakai ulang); tombol di header halaman, unduh mengikuti filter aktif.
+- `AttendancePerformanceService` ditambah `monthlyByEmployee()` + `matrixForMonth()`; CSS `.st-cell`/`.st-date` ditambahkan kembali ke `app.css`.
+- **Verifikasi server**: 4 route rekap terdaftar; render harian 65 KB (30 baris), bulanan 89 KB (176 sel matriks); xlsx harian 7 KB, xlsx bulanan 4,9 KB. Bug ditemukan & diperbaiki: `Employee` belum di-import di `AttendancePerformanceService` (fatal "Class App\Services\Employee not found").
+- **Handoff berikutnya**: F4 Analitik (Performa Pegawai + Rekap Tahunan) -> F5 Pengaturan (butuh endpoint tulis + recompute; route `pengaturan.*` masih placeholder `soon`) -> F6 poles. RBAC/peran belum diimplementasi.
