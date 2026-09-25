@@ -2,6 +2,8 @@
 
 > Status: **RENCANA — menunggu persetujuan**. Menggantikan arah desain di `DESIGN.md` §8.
 > Prinsip: **backend & data dipertahankan, lapisan UI/UX ditata ulang total**.
+> **Spesifikasi matang** (menu, RBAC, tiap layar, design system, metrik, non-fungsional) ada di **`SPEC.md`**.
+> Progres: **F0 + F1 sudah selesai & ter-deploy** (lihat `PROGRESS.md`).
 
 ---
 
