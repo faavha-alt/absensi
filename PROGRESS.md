@@ -173,3 +173,11 @@ Detail lengkap di `REVIEW.md`. Prioritas menurun.
 - `AttendancePerformanceService` ditambah `monthlyByEmployee()` + `matrixForMonth()`; CSS `.st-cell`/`.st-date` ditambahkan kembali ke `app.css`.
 - **Verifikasi server**: 4 route rekap terdaftar; render harian 65 KB (30 baris), bulanan 89 KB (176 sel matriks); xlsx harian 7 KB, xlsx bulanan 4,9 KB. Bug ditemukan & diperbaiki: `Employee` belum di-import di `AttendancePerformanceService` (fatal "Class App\Services\Employee not found").
 - **Handoff berikutnya**: F4 Analitik (Performa Pegawai + Rekap Tahunan) -> F5 Pengaturan (butuh endpoint tulis + recompute; route `pengaturan.*` masih placeholder `soon`) -> F6 poles. RBAC/peran belum diimplementasi.
+
+### 2026-09-25 (F4 — Analitik SELESAI)
+
+- **Performa Pegawai** (`/performa`): pilih pegawai + tahun; 4 KPI (tingkat kehadiran, ketepatan, keterlambatan, pulang cepat); grafik batang bertumpuk 12 bulan + grafik garis menit telat; tabel rincian bulanan + baris TOTAL; ekspor Excel.
+- **Rekap Tahunan** (`/rekap-tahunan`): pilih tahun; 4 KPI tahunan; grafik batang 12 bulan + garis menit telat; **peringkat pegawai** (medali untuk peringkat 1, badge telat/pulang, % ketepatan); ekspor Excel.
+- `GenericExcelBuilder` (baru) — builder judul+header+baris untuk laporan umum; `AttendancePerformanceService::summarize()` ditambahkan agar dipakai bersama.
+- **Verifikasi server**: 4 route terdaftar; performa render 37,5 KB (2 chart), tahunan 34,9 KB (2 chart + 16 badge peringkat); kedua ekspor mengembalikan `StreamedResponse`; builder generik menghasilkan xlsx 4,7 KB.
+- **Handoff berikutnya**: **F5 Pengaturan** (Jam Kerja, Hari Libur, Akun & Keamanan, Perangkat) — route `pengaturan.*` masih placeholder `soon`; butuh endpoint tulis (POST/PUT) + pemanggilan `attendance:recompute-recaps` setelah ubah jam kerja/libur. Lalu **F6 poles** (responsif, aksesibilitas, keyboard, skeleton). RBAC/peran (SPEC §1) belum diimplementasi.
