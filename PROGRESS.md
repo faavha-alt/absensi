@@ -135,3 +135,19 @@ Detail lengkap di `REVIEW.md`. Prioritas menurun.
 - **Fitur laporan performa** — 2 halaman Filament baru: `/admin/employee-performance` (per pegawai) & `/admin/yearly-recap` (agregat 12 bulan + ranking pegawai). Chart.js self-hosted (`public/js/chart.umd.min.js`, dimuat via renderHook `HEAD_END` di `AdminPanelProvider`). Service `App\Services\AttendancePerformanceService` (`monthlyForEmployee`, `monthlyTotals`, `yearlyByEmployee`, `availableYears`). Komponen blade reusable `resources/views/components/attendance-chart.blade.php` (Alpine + `wire:key` supaya chart redraw saat filter berubah). Terverifikasi via tinker: data & konfigurasi grafik benar (12 bulan, 8 pegawai, total hadir 2024=1204); **render visual belum dicek di browser**.
 - **Jebakan penting**: property bertipe di child class Filament harus **persis sama** dengan base-nya, kalau tidak → PHP fatal saat class di-load. Contoh: `Widget::$sort` = `?int` (bukan `int|string`), `$navigationGroup` = `string|UnitEnum|null` + butuh `use UnitEnum;`.
 - **Handoff / langkah berikutnya**: (1) verifikasi visual grafik di browser pada 2 halaman baru itu; (2) pertimbangkan tombol "Hitung ulang rekap" di panel agar tak perlu command manual; (3) sisa item lama: isi NIP resmi/jabatan, jadwal kerja per departemen; (4) repo lokal & server belum sepenuhnya sinkron (server bukan git repo; deploy via scp).
+
+### 2026-09-25 (RESET UI → AeroDeck: F0 + F1 SELESAI)
+
+- **Keputusan user**: hapus Filament total; tata ulang UI/UX saja (data & backend aman); mulai dari F0+F1. Rencana lengkap di **`PLAN.md`**.
+- **F0 fondasi AeroDeck** (gaya glassmorphism Apple/Tesla dari skill `ui-dashboard-aerodeck`):
+  - Layout: `resources/views/layouts/{app,sidebar,header}.blade.php` (sidebar floating, header glass).
+  - Komponen: `resources/views/components/app-icon.blade.php` (⚠ JANGAN pakai nama `x-icon` — bentrok dengan blade-icons Filament).
+  - CSS token & komponen di `resources/css/app.css` (`.apple-glass-card`, `.apple-interactive-card`, `.font-mono-num`, `.badge-status`, `.cal-cell`).
+  - Font self-host via Vite/bunny: **Plus Jakarta Sans** + **JetBrains Mono** (mengganti Instrument Sans) di `vite.config.js`.
+  - Auth custom: `AuthController` + `resources/views/auth/login.blade.php`; route `/login`, `/logout`.
+- **F1 Dashboard**: `DashboardController` + `resources/views/dashboard/index.blade.php` — KPI bento (pegawai aktif, hadir, telat, belum absen + status device), grafik tren 7/30/90 hari (Chart.js), feed scan terbaru, tabel kehadiran hari ini dengan badge status.
+- **Filament DIHAPUS**: `app/Filament/`, `app/Providers/Filament/`, `resources/views/filament/`, `resources/css/filament/` dihapus (lokal + server); `AdminPanelProvider` dicabut dari `bootstrap/providers.php`. **Endpoint alat `/iclock/*` TETAP JALAN** (didaftarkan package `syofyanzuhad/filament-zkteco-adms` secara independen — package tetap terpasang karena dipakai model/event-nya).
+- **Navigasi**: 11 menu kelompok (Pantau/Kepegawaian/Rekap/Analitik/Pengaturan) sudah tampil; modul belum dibangun diarahkan ke halaman placeholder `resources/views/soon.blade.php` + label "soon".
+- **Verifikasi (di server)**: `php -l` lolos; `login=200`, `/admin=404` (Filament hilang), `/iclock/cdata=200` (alat aman); dashboard render 47 KB via tinker (chart+KPI+tabel ada); `app.css` 57 KB ter-serve.
+- **Handoff / langkah berikutnya (F2 dst. sesuai PLAN.md §7)**: F2 Data Pegawai (daftar+detail, kalender, performa) → F3 Rekap Harian/Bulanan + export → F4 Analitik (Performa & Tahunan — logika service `AttendancePerformanceService` & `MonthlyRecapExcelBuilder` sudah ada, tinggal dibungkus UI) → F5 Pengaturan (Jam Kerja, Libur, Akun, Perangkat) → F6 poles. Catatan: halaman pengaturan perlu tulis-endpoint (recompute otomatis) yang dulu ada di Filament.
+- **Jebakan baru**: `<x-icon>` bentrok dengan blade-icons (Filament) → fatal "Svg by name ... not found"; gunakan nama unik (`x-app-icon`).
