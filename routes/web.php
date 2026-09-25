@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnalitikController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
@@ -50,9 +51,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/rekap-harian/export', [RekapController::class, 'exportHarian'])->name('rekap.harian.export');
     Route::get('/rekap-bulanan', [RekapController::class, 'bulanan'])->name('rekap.bulanan');
     Route::get('/rekap-bulanan/export', [RekapController::class, 'exportBulanan'])->name('rekap.bulanan.export');
-    Route::get('/rekap-tahunan', fn () => $soon('Rekap Tahunan', 'Fase 4 · Rekap', 'Agregat 12 bulan dan peringkat ketepatan pegawai.'))->name('rekap.tahunan');
+    Route::get('/rekap-tahunan', [AnalitikController::class, 'tahunan'])->name('rekap.tahunan');
+    Route::get('/rekap-tahunan/export', [AnalitikController::class, 'exportTahunan'])->name('rekap.tahunan.export');
 
-    Route::get('/performa', fn () => $soon('Performa Pegawai', 'Fase 4 · Analitik', 'Grafik bulanan per pegawai: kehadiran, keterlambatan, dan pulang cepat.'))->name('performa.index');
+    Route::get('/performa', [AnalitikController::class, 'performa'])->name('performa.index');
+    Route::get('/performa/export', [AnalitikController::class, 'exportPerforma'])->name('performa.export');
 
     Route::get('/pengaturan/jam-kerja', fn () => $soon('Jam Kerja & Toleransi', 'Fase 5 · Pengaturan', 'Atur jam masuk/pulang dan toleransi — rekap dihitung ulang otomatis.'))->name('pengaturan.jam-kerja');
     Route::get('/pengaturan/libur', fn () => $soon('Hari Libur', 'Fase 5 · Pengaturan', 'Kelola tanggal libur nasional dan cuti bersama.'))->name('pengaturan.libur');

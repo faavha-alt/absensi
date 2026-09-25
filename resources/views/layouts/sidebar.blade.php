@@ -11,10 +11,10 @@
         'Rekap' => [
             ['label' => 'Rekap Harian', 'route' => 'rekap.harian', 'icon' => 'calendar-day'],
             ['label' => 'Rekap Bulanan', 'route' => 'rekap.bulanan', 'icon' => 'calendar'],
-            ['label' => 'Rekap Tahunan', 'route' => 'rekap.tahunan', 'icon' => 'chart', 'soon' => true],
+            ['label' => 'Rekap Tahunan', 'route' => 'rekap.tahunan', 'icon' => 'chart'],
         ],
         'Analitik' => [
-            ['label' => 'Performa Pegawai', 'route' => 'performa.index', 'icon' => 'trending', 'soon' => true],
+            ['label' => 'Performa Pegawai', 'route' => 'performa.index', 'icon' => 'trending'],
         ],
         'Pengaturan' => [
             ['label' => 'Jam Kerja', 'route' => 'pengaturan.jam-kerja', 'icon' => 'cog', 'soon' => true],

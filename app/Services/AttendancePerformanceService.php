@@ -288,4 +288,29 @@ class AttendancePerformanceService
 
         return compact('employees', 'days', 'cells');
     }
+
+    /**
+     * Ringkasan setahun dari data bulanan.
+     *
+     * @param  array<int, array{hadir:int, telat:int, pulang:int, menit_telat:int, hari_kerja:int}>  $monthly
+     * @return array<string, float|int>
+     */
+    public function summarize(array $monthly): array
+    {
+        $hadir = array_sum(array_column($monthly, 'hadir'));
+        $telat = array_sum(array_column($monthly, 'telat'));
+        $pulang = array_sum(array_column($monthly, 'pulang'));
+        $menit = array_sum(array_column($monthly, 'menit_telat'));
+        $hariKerja = array_sum(array_column($monthly, 'hari_kerja'));
+
+        return [
+            'hadir' => $hadir,
+            'telat' => $telat,
+            'pulang' => $pulang,
+            'menit_telat' => $menit,
+            'hari_kerja' => $hariKerja,
+            'persen_hadir' => $hariKerja > 0 ? round($hadir / $hariKerja * 100, 1) : 0,
+            'persen_tepat' => $hadir > 0 ? round(($hadir - $telat) / $hadir * 100, 1) : 0,
+        ];
+    }
 }
